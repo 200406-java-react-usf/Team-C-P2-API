@@ -1,80 +1,164 @@
 package com.travelapp.models;
 
+import javax.annotation.Generated;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table(name="app_users")
 public class User {
 
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private int role;
+    // Variable declaration
 
-    public User(String username, String password, String firstName, String lastName, String email, int role) {
+    @Id
+    @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private Role role;
+
+    @Column(nullable = false)
+    @OneToMany
+    private List<Ticket> tickets;
+
+    //Constructors
+
+    public User(String username, String password, String firstName, String lastName, String email, Role role) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+    }
+
+    public User(String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
+        this(username, password, firstName, lastName, email, role);
+        this.tickets = tickets;
+    }
+
+    // Getters/Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public User setId(int id) {
+        this.id = id;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public int getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public User setRole(Role role) {
         this.role = role;
+        return this;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public User setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+        return this;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
+                ", tickets=" + tickets +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(tickets, user.tickets);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, firstName, lastName, email, role, tickets);
     }
 }
