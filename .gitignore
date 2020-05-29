@@ -1,6 +1,7 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
-.idea/*
-src/main/resources/app.properties
-libraries/*
+.idea/
+src/main/webapp/app.properties
+libraries/
+target/
