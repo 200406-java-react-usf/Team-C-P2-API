@@ -9,5 +9,8 @@
         <module name="Team-C-P2-API" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Team-C-P2-API" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
