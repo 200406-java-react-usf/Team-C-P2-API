@@ -97,7 +97,7 @@
   </component>
   <component name="RunManager">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.travelapp.App" />
+      <option name="MAIN_CLASS_NAME" value="com.travelapp.AppConfig" />
       <module name="Team-C-P2-API" />
       <extension name="coverage">
         <pattern>
