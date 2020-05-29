@@ -40,6 +40,10 @@ public class User {
 
     //Constructors
 
+    public User() {
+
+    }
+
     public User(String username, String password, String firstName, String lastName, String email, Role role) {
         this.username = username;
         this.password = password;
