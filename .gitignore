@@ -4,3 +4,5 @@
 .idea
 src/main/resources/app.properties
 /target/
+.idea/
+src/main/resources/app.properties

@@ -1,17 +1,21 @@
 package com.travelapp.repos;
 
-import com.travelapp.config.HibernateConfig;
+
 import com.travelapp.models.Ticket;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class TicketRepository implements CrudRepository<Ticket> {
 
-    private SessionFactory sessionFactory = HibernateConfig.buildSessionFactory();
+    private SessionFactory sessionFactory;
 
+    @Autowired
     private TicketRepository(SessionFactory factory) {
         super();
         this.sessionFactory = factory;

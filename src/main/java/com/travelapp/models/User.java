@@ -1,12 +1,11 @@
 package com.travelapp.models;
 
-import javax.annotation.Generated;
+
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="app_users")
+@Table(name = "users",schema = "public")
 public class User {
 
     // Variable declaration
@@ -31,12 +30,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private Role role;
-
-    @Column(nullable = false)
-    @OneToMany
-    private List<Ticket> tickets;
+//    @Column
+//    private Role role;
+//
+//    @Column
+//    @OneToMany
+//    private List<Ticket> tickets;
 
     //Constructors
 
@@ -44,19 +43,35 @@ public class User {
 
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, Role role) {
+    public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.role = role;
     }
 
-    public User(String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
-        this(username, password, firstName, lastName, email, role);
-        this.tickets = tickets;
+    public User(int id, String username, String password, String firstName, String lastName, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
+    //    public User(String username, String password, String firstName, String lastName, String email, Role role) {
+//        this.username = username;
+//        this.password = password;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.role = role;
+//    }
+
+//    public User(String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
+//        this(username, password, firstName, lastName, email, role);
+////        this.tickets = tickets;
+//    }
 
     // Getters/Setters
 
@@ -114,23 +129,23 @@ public class User {
         return this;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public User setRole(Role role) {
-        this.role = role;
-        return this;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public User setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-        return this;
-    }
+//    public Role getRole() {
+//        return role;
+//    }
+//
+//    public User setRole(Role role) {
+//        this.role = role;
+//        return this;
+//    }
+//
+//    public List<Ticket> getTickets() {
+//        return tickets;
+//    }
+//
+//    public User setTickets(List<Ticket> tickets) {
+//        this.tickets = tickets;
+//        return this;
+//    }
 
     @Override
     public String toString() {
@@ -141,8 +156,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", role=" + role +
-                ", tickets=" + tickets +
                 '}';
     }
 
@@ -156,13 +169,11 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(role, user.role) &&
-                Objects.equals(tickets, user.tickets);
+                Objects.equals(email, user.email) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, email, role, tickets);
+        return Objects.hash(id, username, password, firstName, lastName, email);
     }
 }

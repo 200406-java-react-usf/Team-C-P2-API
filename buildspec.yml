@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+  post_build:
+    commands:
+      - mvn package
+      - mv target/Team-C-P2-API-1.0-SNAPSHOT.war Team-C-P2-API-1.0-SNAPSHOT.war
+artifacts:
+  files:
+    - Team-C-P2-API-1.0-SNAPSHOT.war
+    - .ebextensions/**/*
+  base-directory: 'target/Team-C-P2-API-1.0-SNAPSHOT'
