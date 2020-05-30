@@ -26,14 +26,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean updateUser(@RequestBody User updatedUser){
-        return userService.updateUser(updatedUser);
-    }
+//    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public boolean updateUser(@RequestBody User updatedUser){
+//        return userService.updateUser(updatedUser);
+//    }
 
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteUser(@PathVariable int id){
         return userService.deleteUserById(id);
 
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User saveUser(@RequestBody User newUser){
+        return userService.saveNewUser(newUser);
     }
 }
