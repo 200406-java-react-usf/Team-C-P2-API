@@ -1,0 +1,13 @@
+com\travelapp\repos\UserRepository.class
+com\travelapp\models\User.class
+com\travelapp\AppConfig.class
+com\travelapp\models\Recommendation.class
+com\travelapp\repos\CrudRepository.class
+com\travelapp\services\UserService.class
+com\travelapp\web\controllers\UserController.class
+com\travelapp\web\dtos\Credentials.class
+com\travelapp\web\controllers\TicketController.class
+com\travelapp\models\Ticket.class
+com\travelapp\repos\TicketRepository.class
+com\travelapp\services\TicketService.class
+com\travelapp\models\Role.class
