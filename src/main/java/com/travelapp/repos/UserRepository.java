@@ -1,6 +1,7 @@
 package com.travelapp.repos;
 
 import com.travelapp.models.User;
+import com.travelapp.web.dtos.Credentials;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,24 +15,25 @@ import java.util.List;
 @Repository
 public class UserRepository {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
 
+    @Autowired
     public UserRepository(SessionFactory factory) {
         super();
         this.sessionFactory = factory;
     }
 
-    public User findUserByCredentials(User credentials) {
+    public User findUserByCredentials(Credentials credentials) {
         User validUser = null;
 
         try(Session session = sessionFactory.getCurrentSession()) {
 
             session.beginTransaction();
-            validUser = (User) session.createQuery("from User u " +
+            validUser = session.createQuery("from User u " +
                     "where u.username = :un and u.password = :pw", User.class)
                     .setParameter("un" , credentials.getUsername())
-                    .setParameter("pw", credentials.getPassword());
+                    .setParameter("pw", credentials.getPassword()).getSingleResult();
 
         }
         catch (Exception e){
