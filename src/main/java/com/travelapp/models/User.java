@@ -2,6 +2,7 @@ package com.travelapp.models;
 
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,12 +31,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column
-//    private Role role;
-//
-//    @Column
-//    @OneToMany
-//    private List<Ticket> tickets;
+    @ManyToOne(cascade= CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private Role role;
+
+    @OneToMany(mappedBy = "author")
+    private List<Ticket> tickets;
 
     //Constructors
 
@@ -51,27 +52,35 @@ public class User {
         this.email = email;
     }
 
-    public User(int id, String username, String password, String firstName, String lastName, String email) {
+    public User(String username, String password, String firstName, String lastName, String email, Role role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName, String email, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.role = role;
     }
-    //    public User(String username, String password, String firstName, String lastName, String email, Role role) {
-//        this.username = username;
-//        this.password = password;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.role = role;
-//    }
 
-//    public User(String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
-//        this(username, password, firstName, lastName, email, role);
-////        this.tickets = tickets;
-//    }
+    public User(int id, String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.tickets = tickets;
+    }
 
     // Getters/Setters
 
@@ -129,23 +138,25 @@ public class User {
         return this;
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public User setRole(Role role) {
-//        this.role = role;
-//        return this;
-//    }
-//
-//    public List<Ticket> getTickets() {
-//        return tickets;
-//    }
-//
-//    public User setTickets(List<Ticket> tickets) {
-//        this.tickets = tickets;
-//        return this;
-//    }
+    public String getRole() {
+        //return role to get both id and name
+        return role.getRoleName();
+    }
+
+    public User setRole(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public User setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+        return this;
+    }
+
 
     @Override
     public String toString() {
@@ -156,6 +167,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", role=" + role +
                 '}';
     }
 
@@ -169,11 +181,12 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) ;
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, email);
+        return Objects.hash(id, username, password, firstName, lastName, email, role);
     }
 }

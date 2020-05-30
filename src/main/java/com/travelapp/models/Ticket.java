@@ -3,6 +3,7 @@ package com.travelapp.models;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -31,8 +32,9 @@ public class Ticket {
     @Column(nullable = false)
     private Date arrivalTime;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private User author;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private User author;
 //
 //    @OneToMany(mappedBy = "Recommendations")
 //    private List<Recommendation> recommendations;
@@ -51,18 +53,21 @@ public class Ticket {
     }
 
     public Ticket(int id, double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
+        this(cost, origin, destination, departureTime, arrivalTime);
         this.id = id;
-        this.cost = cost;
-        this.origin = origin;
-        this.destination = destination;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
     }
-    //    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
-//        this(cost, origin, destination, departureTime, arrivalTime);
-//        this.author = author;
-//    }
-//
+
+        public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
+        this(cost, origin, destination, departureTime, arrivalTime);
+        this.author = author;
+    }
+
+    public Ticket(int id, double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
+        this(id, cost, origin, destination, departureTime, arrivalTime);
+        this.author = author;
+    }
+
+    //
 //    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, List<Recommendation> recommendations) {
 //        this(cost, origin, destination, departureTime, arrivalTime);
 //        this.recommendations = recommendations;
@@ -130,14 +135,14 @@ public class Ticket {
         return this;
     }
 
-//    public User getAuthor() {
-//        return author;
-//    }
-//
-//    public Ticket setAuthor(User author) {
-//        this.author = author;
-//        return this;
-//    }
+    public User getAuthor() {
+        return author;
+    }
+
+    public Ticket setAuthor(User author) {
+        this.author = author;
+        return this;
+    }
 //
 //    public List<Recommendation> getRecommendations() {
 //        return recommendations;
@@ -148,6 +153,26 @@ public class Ticket {
 //        return this;
 //    }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return id == ticket.id &&
+                Double.compare(ticket.cost, cost) == 0 &&
+                Objects.equals(origin, ticket.origin) &&
+                Objects.equals(destination, ticket.destination) &&
+                Objects.equals(departureTime, ticket.departureTime) &&
+                Objects.equals(arrivalTime, ticket.arrivalTime) &&
+                Objects.equals(author, ticket.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cost, origin, destination, departureTime, arrivalTime, author);
+    }
+
     @Override
     public String toString() {
         return "Ticket{" +
@@ -157,6 +182,7 @@ public class Ticket {
                 ", destination='" + destination + '\'' +
                 ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
+                ", author=" + author +
                 '}';
     }
 }
