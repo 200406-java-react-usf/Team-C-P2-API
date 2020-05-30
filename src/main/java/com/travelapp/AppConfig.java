@@ -24,7 +24,6 @@ import java.util.Properties;
 @Configuration
 @ComponentScan
 @EnableTransactionManagement
-@EnableAspectJAutoProxy(proxyTargetClass=true)
 @PropertySource("classpath:app.properties")
 public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
@@ -40,11 +39,15 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
     @Value("${db.password}")
     private String dbPassword;
 
+    @Value("${db.schema}")
+    private String dbSchema;
+
     @Bean
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(dbDriver);
         dataSource.setUrl(dbUrl);
+        dataSource.setDefaultSchema(dbSchema);
         dataSource.setUsername(dbUsername);
         dataSource.setPassword(dbPassword);
         return dataSource;
@@ -54,7 +57,7 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.revature.travelapp.models");
+        sessionFactory.setPackagesToScan("com.travelapp.models");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -72,7 +75,7 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
         hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL95Dialect");
         hibernateProperties.setProperty(Environment.SHOW_SQL, "true");
         hibernateProperties.setProperty(Environment.FORMAT_SQL, "true");
-        hibernateProperties.setProperty(Environment.HBM2DDL_AUTO, "update");
+        hibernateProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
         return hibernateProperties;
     }
 
