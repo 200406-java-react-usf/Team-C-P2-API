@@ -7,9 +7,9 @@ phases:
   post_build:
     commands:
       - mvn package
-      - mv target/my-web-app.war my-web-app.war
+      - mv target/Team-C-P2-API-1.0-SNAPSHOT.war Team-C-P2-API-1.0-SNAPSHOT.war
 artifacts:
   files:
-    - my-web-app.war
+    - Team-C-P2-API-1.0-SNAPSHOT.war
     - .ebextensions/**/*
-  base-directory: 'target/my-web-app'
+  base-directory: 'target/Team-C-P2-API-1.0-SNAPSHOT'
