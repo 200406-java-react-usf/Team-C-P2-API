@@ -22,19 +22,24 @@ public class TicketController {
     }
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Ticket> getAllUsers(HttpServletRequest req) {
+    public List<Ticket> getAllTickets(HttpServletRequest req) {
         return ticketService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Ticket getTicketById(@PathVariable int id) {
+        return ticketService.getById(id);
+    }
+
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-    public Ticket registerNewUser(@RequestBody Ticket newTicket) {
+    public Ticket registerNewTicket(@RequestBody Ticket newTicket) {
         return ticketService.save(newTicket);
     }
 
-    // localhost:8080/quizzard/users?id=1
-    @GetMapping("/{id}")
-    public Ticket getUserById(@PathVariable int id) {
-        return null;
-    }
+    @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public boolean updateTicket(@RequestBody Ticket updatedTicket) { return ticketService.update(updatedTicket); }
+
+    @PostMapping("/{id}")
+    public boolean deleteTicket(@PathVariable int id) { return ticketService.deleteById(id); }
 
 }

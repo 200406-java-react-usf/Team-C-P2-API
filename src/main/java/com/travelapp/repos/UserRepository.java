@@ -54,12 +54,8 @@ public class UserRepository {
 
     public List<User> getAll() {
 
-
             Session session = sessionFactory.getCurrentSession();
             return session.createNativeQuery("select * from users",User.class).getResultList();
-
-
-
 
     }
 
