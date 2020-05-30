@@ -1,8 +1,7 @@
 package com.travelapp.models;
 
-import javax.annotation.Generated;
+
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
