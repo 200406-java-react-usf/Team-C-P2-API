@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -42,46 +43,52 @@ public class UserRepository {
         return validUser;
     }
 
+    public User save(User newUser){
+
+        Session session = sessionFactory.getCurrentSession();
+        session.save(newUser);
+        return newUser;
+
+
+    }
+
     public List<User> getAll() {
-        List<User> allUsers = null;
-        try(Session session = sessionFactory.getCurrentSession()) {
 
-            session.beginTransaction();
-            allUsers = session.createQuery("from User",User.class).list();
 
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return allUsers;
+            Session session = sessionFactory.getCurrentSession();
+            return session.createNativeQuery("select * from users",User.class).getResultList();
+
+
+
+
     }
 
-    public boolean updateUser(User updatedUser){
-        Transaction transaction = null;
-
-        try(Session session = sessionFactory.getCurrentSession()) {
-
-            transaction = session.beginTransaction();
-            Query query = session.createQuery("update User u set u.password = :pw " +
-                    ", u.first_name = :fn , u.last_name = :ln , u.email = :email , u.role = :role");
-
-            query.setParameter("pw", updatedUser.getPassword())
-                    .setParameter("fn", updatedUser.getFirstName())
-                    .setParameter("ln", updatedUser.getLastName())
-                    .setParameter("email", updatedUser.getEmail())
-                    .setParameter("role", updatedUser.getRole());
-
-            transaction.commit();
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            return false;
-        }
-    }
+//    public boolean updateUser(User updatedUser){
+//        Transaction transaction = null;
+//
+//        try(Session session = sessionFactory.getCurrentSession()) {
+//
+//            transaction = session.beginTransaction();
+//            Query query = session.createQuery("update User u set u.password = :pw " +
+//                    ", u.first_name = :fn , u.last_name = :ln , u.email = :email , u.role = :role");
+//
+//            query.setParameter("pw", updatedUser.getPassword())
+//                    .setParameter("fn", updatedUser.getFirstName())
+//                    .setParameter("ln", updatedUser.getLastName())
+//                    .setParameter("email", updatedUser.getEmail())
+//                    .setParameter("role", updatedUser.getRole());
+//
+//            transaction.commit();
+//            return true;
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            if (transaction != null) {
+//                transaction.rollback();
+//            }
+//            return false;
+//        }
+//    }
 
     public boolean deleteById(int id){
         Transaction transaction = null;

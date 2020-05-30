@@ -18,8 +18,8 @@ public class Recommendation {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "Ticket")
-    private Ticket ticket;
+//    @OneToMany(mappedBy = "Ticket")
+//    private Ticket ticket;
 
     // Constructors
 
@@ -28,10 +28,15 @@ public class Recommendation {
         this.description = description;
     }
 
-    public Recommendation(String destination, String description, Ticket ticket) {
-        this(description, destination);
-        this.ticket = ticket;
+    public Recommendation(int id, String destination, String description) {
+        this.id = id;
+        this.destination = destination;
+        this.description = description;
     }
+    //    public Recommendation(String destination, String description, Ticket ticket) {
+//        this(description, destination);
+//        this.ticket = ticket;
+//    }
 
     // Getters/Setters
 
@@ -62,14 +67,14 @@ public class Recommendation {
         return this;
     }
 
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public Recommendation setTicket(Ticket ticket) {
-        this.ticket = ticket;
-        return this;
-    }
+//    public Ticket getTicket() {
+//        return ticket;
+//    }
+//
+//    public Recommendation setTicket(Ticket ticket) {
+//        this.ticket = ticket;
+//        return this;
+//    }
 
     @Override
     public String toString() {
@@ -87,12 +92,11 @@ public class Recommendation {
         Recommendation that = (Recommendation) o;
         return id == that.id &&
                 Objects.equals(destination, that.destination) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(ticket, that.ticket);
+                Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, destination, description, ticket);
+        return Objects.hash(id, destination, description);
     }
 }

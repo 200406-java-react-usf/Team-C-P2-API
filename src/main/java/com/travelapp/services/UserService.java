@@ -20,15 +20,15 @@ public class UserService {
         this.userRepo = repo;
     }
 
-    @Transactional
+    @Transactional(readOnly=true)
     public List<User> getAllUsers() {
         return userRepo.getAll();
     }
 
-    @Transactional
-    public boolean updateUser(User updatedUser) {
-        return userRepo.updateUser(updatedUser);
-    }
+//    @Transactional
+//    public boolean updateUser(User updatedUser) {
+//        return userRepo.updateUser(updatedUser);
+//    }
 
     @Transactional
     public boolean deleteUserById(int id) {
@@ -38,5 +38,10 @@ public class UserService {
     @Transactional
     public User findUserByCredentials(Credentials creds) {
         return userRepo.findUserByCredentials(creds);
+    }
+
+    @Transactional
+    public User saveNewUser(User newUser) {
+        return userRepo.save(newUser);
     }
 }

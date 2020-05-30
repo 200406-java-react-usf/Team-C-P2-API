@@ -31,13 +31,16 @@ public class Ticket {
     @Column(nullable = false)
     private Date arrivalTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User author;
-
-    @OneToMany(mappedBy = "Recommendations")
-    private List<Recommendation> recommendations;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User author;
+//
+//    @OneToMany(mappedBy = "Recommendations")
+//    private List<Recommendation> recommendations;
 
     // Constructors
+    public Ticket() {
+
+    }
 
     public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
         this.cost = cost;
@@ -47,21 +50,29 @@ public class Ticket {
         this.arrivalTime = arrivalTime;
     }
 
-    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
-        this(cost, origin, destination, departureTime, arrivalTime);
-        this.author = author;
+    public Ticket(int id, double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
+        this.id = id;
+        this.cost = cost;
+        this.origin = origin;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
     }
-
-    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, List<Recommendation> recommendations) {
-        this(cost, origin, destination, departureTime, arrivalTime);
-        this.recommendations = recommendations;
-    }
-
-    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author, List<Recommendation> recommendations) {
-        this(cost, origin, destination, departureTime, arrivalTime);
-        this.author = author;
-        this.recommendations = recommendations;
-    }
+    //    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
+//        this(cost, origin, destination, departureTime, arrivalTime);
+//        this.author = author;
+//    }
+//
+//    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, List<Recommendation> recommendations) {
+//        this(cost, origin, destination, departureTime, arrivalTime);
+//        this.recommendations = recommendations;
+//    }
+//
+//    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author, List<Recommendation> recommendations) {
+//        this(cost, origin, destination, departureTime, arrivalTime);
+//        this.author = author;
+//        this.recommendations = recommendations;
+//    }
 
     // Getters/Setters
 
@@ -119,23 +130,23 @@ public class Ticket {
         return this;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public Ticket setAuthor(User author) {
-        this.author = author;
-        return this;
-    }
-
-    public List<Recommendation> getRecommendations() {
-        return recommendations;
-    }
-
-    public Ticket setRecommendations(List<Recommendation> recommendations) {
-        this.recommendations = recommendations;
-        return this;
-    }
+//    public User getAuthor() {
+//        return author;
+//    }
+//
+//    public Ticket setAuthor(User author) {
+//        this.author = author;
+//        return this;
+//    }
+//
+//    public List<Recommendation> getRecommendations() {
+//        return recommendations;
+//    }
+//
+//    public Ticket setRecommendations(List<Recommendation> recommendations) {
+//        this.recommendations = recommendations;
+//        return this;
+//    }
 
     @Override
     public String toString() {
@@ -146,7 +157,6 @@ public class Ticket {
                 ", destination='" + destination + '\'' +
                 ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
-                ", recommendations=" + recommendations +
                 '}';
     }
 }
