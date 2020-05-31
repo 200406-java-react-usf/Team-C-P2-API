@@ -1,12 +1,15 @@
 package com.travelapp.web.controllers;
 
 import com.travelapp.models.Ticket;
+import com.travelapp.models.User;
 import com.travelapp.services.TicketService;
+import com.travelapp.web.dtos.TicketDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 
@@ -32,14 +35,16 @@ public class TicketController {
     }
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-    public Ticket registerNewTicket(@RequestBody Ticket newTicket) {
+    public Ticket registerNewTicket(@RequestBody TicketDto newTicket) {
+        newTicket.setArrivalTime(new Date());
+        newTicket.setDepartureTime(new Date());
         return ticketService.save(newTicket);
     }
 
-    @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
     public boolean updateTicket(@RequestBody Ticket updatedTicket) { return ticketService.update(updatedTicket); }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     public boolean deleteTicket(@PathVariable int id) { return ticketService.deleteById(id); }
 
 }
