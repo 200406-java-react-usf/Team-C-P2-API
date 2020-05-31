@@ -2,8 +2,11 @@ package com.travelapp.models;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "users",schema = "public")
@@ -31,17 +34,21 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade= ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(cascade = ALL,mappedBy = "author", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
     //Constructors
 
     public User() {
 
+    }
+
+    public User(int id) {
+        this.id = id;
     }
 
     public User(String username, String password, String firstName, String lastName, String email) {
@@ -148,13 +155,24 @@ public class User {
         return this;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
+//    public List<Integer> getTickets() {
+//        List<Integer> res = new ArrayList<>();
+//        for (Ticket ticket: tickets) {
+//
+//            res.add(ticket.getId());
+//        }
+//        return res;
+//    }
 
     public User setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
         return this;
+    }
+
+    public void addTickets(Ticket ticket) {
+        if (tickets == null) tickets = new ArrayList<>();
+        ticket.setAuthor(this);
+        tickets.add(ticket);
     }
 
 
