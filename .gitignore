@@ -2,5 +2,12 @@
 /shelf/
 /.idea/workspace.xml
 /.idea/
-src/main/webapp/app.properties
-/target/
+src/main/resources/app.properties
+/target/classes/
+/target/generated-sources
+/target/generated-test-sources
+/target/maven-archiver
+/target/maven-status
+/target/surefire-reports
+/target/Team-C-P2-API-1.0-SNAPSHOT
+/target/test-classes
