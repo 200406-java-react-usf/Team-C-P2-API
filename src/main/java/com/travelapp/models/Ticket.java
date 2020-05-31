@@ -1,5 +1,8 @@
 package com.travelapp.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -27,9 +30,11 @@ public class Ticket {
     private String destination;
 
     @Column(nullable = false)
+    @JsonSerialize(using = DateSerializer.class)
     private Date departureTime;
 
     @Column(nullable = false)
+    @JsonSerialize(using = DateSerializer.class)
     private Date arrivalTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
