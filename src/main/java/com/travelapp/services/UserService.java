@@ -1,5 +1,6 @@
 package com.travelapp.services;
 
+import com.travelapp.exceptions.BadRequestException;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
@@ -42,6 +43,11 @@ public class UserService {
 
     @Transactional
     public User saveNewUser(User newUser) {
+
+        if (!newUser.getRole().equals("Admin") && !newUser.getRole().equals("User")) {
+            throw new BadRequestException("Invalid Role Provided");
+        }
+
         return userRepo.save(newUser);
     }
 }
