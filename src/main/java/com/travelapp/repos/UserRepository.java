@@ -4,13 +4,10 @@ import com.travelapp.models.User;
 import com.travelapp.web.dtos.Credentials;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Repository
@@ -26,20 +23,14 @@ public class UserRepository {
     }
 
     public User findUserByCredentials(Credentials credentials) {
-        User validUser = null;
 
-        try(Session session = sessionFactory.getCurrentSession()) {
+        Session session = sessionFactory.getCurrentSession();
+        User validUser = session.createQuery("from User u " +
+                "where u.username = :un and u.password = :pw", User.class)
+                .setParameter("un", credentials.getUsername())
+                .setParameter("pw", credentials.getPassword()).getSingleResult();
 
-            session.beginTransaction();
-            validUser = session.createQuery("from User u " +
-                    "where u.username = :un and u.password = :pw", User.class)
-                    .setParameter("un" , credentials.getUsername())
-                    .setParameter("pw", credentials.getPassword()).getSingleResult();
 
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
         return validUser;
     }
 
@@ -54,12 +45,8 @@ public class UserRepository {
 
     public List<User> getAll() {
 
-
             Session session = sessionFactory.getCurrentSession();
             return session.createNativeQuery("select * from users",User.class).getResultList();
-
-
-
 
     }
 
@@ -91,21 +78,15 @@ public class UserRepository {
 //    }
 
     public boolean deleteById(int id){
-        Transaction transaction = null;
-        User deletedUser;
         try(Session session = sessionFactory.getCurrentSession()) {
 
-            transaction = session.beginTransaction();
+            User deletedUser;
             deletedUser = session.get(User.class, id);
             session.delete(deletedUser);
-            transaction.commit();
             return true;
         }
         catch (Exception e) {
             e.printStackTrace();
-            if (transaction != null) {
-                transaction.rollback();
-            }
             return false;
         }
     }

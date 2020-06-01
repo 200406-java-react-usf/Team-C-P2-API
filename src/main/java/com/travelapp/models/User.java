@@ -2,7 +2,11 @@ package com.travelapp.models;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "users",schema = "public")
@@ -30,17 +34,21 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column
-//    private Role role;
-//
-//    @Column
-//    @OneToMany
-//    private List<Ticket> tickets;
+    @ManyToOne(cascade= ALL, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private Role role;
+
+    @OneToMany(cascade = ALL,mappedBy = "author", fetch = FetchType.EAGER)
+    private List<Ticket> tickets;
 
     //Constructors
 
     public User() {
 
+    }
+
+    public User(int id) {
+        this.id = id;
     }
 
     public User(String username, String password, String firstName, String lastName, String email) {
@@ -51,27 +59,35 @@ public class User {
         this.email = email;
     }
 
-    public User(int id, String username, String password, String firstName, String lastName, String email) {
+    public User(String username, String password, String firstName, String lastName, String email, Role role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName, String email, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.role = role;
     }
-    //    public User(String username, String password, String firstName, String lastName, String email, Role role) {
-//        this.username = username;
-//        this.password = password;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.role = role;
-//    }
 
-//    public User(String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
-//        this(username, password, firstName, lastName, email, role);
-////        this.tickets = tickets;
-//    }
+    public User(int id, String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+        this.tickets = tickets;
+    }
 
     // Getters/Setters
 
@@ -129,23 +145,36 @@ public class User {
         return this;
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
+    public String getRole() {
+        //return role to get both id and name
+        return role.getRoleName();
+    }
+
+    public User setRole(Role role) {
+        this.role = role;
+        return this;
+    }
+
+//    public List<Integer> getTickets() {
+//        List<Integer> res = new ArrayList<>();
+//        for (Ticket ticket: tickets) {
 //
-//    public User setRole(Role role) {
-//        this.role = role;
-//        return this;
+//            res.add(ticket.getId());
+//        }
+//        return res;
 //    }
-//
-//    public List<Ticket> getTickets() {
-//        return tickets;
-//    }
-//
-//    public User setTickets(List<Ticket> tickets) {
-//        this.tickets = tickets;
-//        return this;
-//    }
+
+    public User setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+        return this;
+    }
+
+    public void addTickets(Ticket ticket) {
+        if (tickets == null) tickets = new ArrayList<>();
+        ticket.setAuthor(this);
+        tickets.add(ticket);
+    }
+
 
     @Override
     public String toString() {
@@ -156,6 +185,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", role=" + role +
                 '}';
     }
 
@@ -169,11 +199,12 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) ;
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, email);
+        return Objects.hash(id, username, password, firstName, lastName, email, role);
     }
 }

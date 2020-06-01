@@ -12,6 +12,7 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -75,7 +76,7 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
         hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL95Dialect");
         hibernateProperties.setProperty(Environment.SHOW_SQL, "true");
         hibernateProperties.setProperty(Environment.FORMAT_SQL, "true");
-        hibernateProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
+        hibernateProperties.setProperty(Environment.HBM2DDL_AUTO, "update");
         return hibernateProperties;
     }
 
@@ -90,6 +91,12 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
 
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**").allowedMethods("GET","POST","PUT","DELETE");
+        registry.addMapping("/**").allowCredentials(true);
     }
 
 }

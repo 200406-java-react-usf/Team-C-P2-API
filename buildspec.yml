@@ -12,4 +12,4 @@ artifacts:
   files:
     - Team-C-P2-API-1.0-SNAPSHOT.war
     - .ebextensions/**/*
-  base-directory: 'target/Team-C-P2-API-1.0-SNAPSHOT'
+#  base-directory: 'target/Team-C-P2-API-1.0-SNAPSHOT'

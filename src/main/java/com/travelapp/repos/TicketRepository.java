@@ -2,9 +2,10 @@ package com.travelapp.repos;
 
 
 import com.travelapp.models.Ticket;
+import com.travelapp.models.User;
+import com.travelapp.web.dtos.TicketDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,99 +24,77 @@ public class TicketRepository implements CrudRepository<Ticket> {
 
     @Override
     public List<Ticket> getAll() {
-        List<Ticket> retrievedTickets = null;
-        try (Session session = sessionFactory.getCurrentSession()) {
-
-            session.beginTransaction();
-
-            retrievedTickets = session.createQuery("From AppUser", Ticket.class).list();
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Ticket> retrievedTickets = session.createQuery("From Ticket", Ticket.class).list();
+
 
         return retrievedTickets;
     }
 
     @Override
     public Ticket findById(int id) {
-        Ticket retrievedTicket = null;
-        try (Session session = sessionFactory.getCurrentSession()) {
 
-            session.beginTransaction();
-
-            retrievedTicket = session.get(Ticket.class, id);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Ticket retrievedTicket = session.get(Ticket.class, id);
 
         return retrievedTicket;
     }
 
-    @Override
-    public Ticket save(Ticket newTicket) {
-        Transaction tx = null;
-        try (Session session = sessionFactory.getCurrentSession()) {
 
-            tx = session.beginTransaction();
-            session.save(newTicket);
-            tx.commit();
+    public Ticket save(Ticket ticket, int id) {
 
+        Session session = sessionFactory.getCurrentSession();
 
-        } catch (Exception e) {
+        System.out.println(id);
+        try{
+            User user = session.load(User.class, id);
+            System.out.println(user);
+            ticket.setAuthor(user);
+            user.addTickets(ticket);
+//
+//            session.save(ticket);
+        }
+        catch (Exception e){
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
-            }
+            System.out.println("Nothing");
         }
 
-        return newTicket;
+
+        return ticket;
     }
 
     @Override
     public boolean update(Ticket updatedTicket) {
-        Transaction tx = null;
         try (Session session = sessionFactory.getCurrentSession()) {
 
-            tx = session.beginTransaction();
-
             session.update(updatedTicket);
-
             return true;
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
-            }
+            return false;
         }
 
-        return false;
     }
 
     @Override
     public boolean deleteById(int id) {
-        Transaction tx = null;
         try (Session session = sessionFactory.getCurrentSession()) {
 
-            tx = session.beginTransaction();
 
             Ticket s = session.load(Ticket.class, id);
             session.delete(s);
 
-            tx.commit();
             return true;
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (tx != null) {
-                tx.rollback();
-            }
+            return false;
         }
 
-        return false;
+
     }
 }

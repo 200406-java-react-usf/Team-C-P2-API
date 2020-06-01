@@ -1,11 +1,9 @@
 package com.travelapp.models;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Role {
 
     // Variable Declaration
@@ -16,12 +14,23 @@ public class Role {
     private int id;
 
     @Column(nullable = false, unique = true)
-    private String role;
+    private String roleName;
+
+
 
     // Constructors
 
+    public Role() {
+
+    }
+
     public Role(String role) {
-        this.role = role;
+        this.roleName = role;
+    }
+
+    public Role(int id, String role) {
+        this.id = id;
+        this.roleName = role;
     }
 
     // Getters/Setters
@@ -35,14 +44,15 @@ public class Role {
         return this;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public Role setRole(String role) {
-        this.role = role;
+    public Role setRoleName(String roleName) {
+        this.roleName = roleName;
         return this;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -50,19 +60,19 @@ public class Role {
         if (o == null || getClass() != o.getClass()) return false;
         Role role1 = (Role) o;
         return id == role1.id &&
-                Objects.equals(role, role1.role);
+                Objects.equals(roleName, role1.roleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, role);
+        return Objects.hash(id, roleName);
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
+                ", role='" + roleName + '\'' +
                 '}';
     }
 }
