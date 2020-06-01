@@ -1,7 +1,10 @@
 package com.travelapp.models;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 public class Role {
@@ -16,7 +19,8 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String roleName;
 
-
+    @OneToMany(cascade = ALL, mappedBy = "role", fetch = FetchType.EAGER)
+    private List<User> users;
 
     // Constructors
 
