@@ -1,9 +1,11 @@
 package com.travelapp.repos;
 
+import com.travelapp.models.Role;
 import com.travelapp.models.User;
 import com.travelapp.web.dtos.Credentials;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +39,11 @@ public class UserRepository {
     public User save(User newUser){
 
         Session session = sessionFactory.getCurrentSession();
+        if (newUser.getRole().equals("Admin")) {
+            newUser.setRole(session.get(Role.class, 1));
+        } else if (newUser.getRole().equals("User")) {
+            newUser.setRole(session.get(Role.class, 2));
+        }
         session.save(newUser);
         return newUser;
 
@@ -81,14 +88,15 @@ public class UserRepository {
         try(Session session = sessionFactory.getCurrentSession()) {
 
             User deletedUser;
-            deletedUser = session.get(User.class, id);
-            session.delete(deletedUser);
-            return true;
+            session.createQuery("delete users where id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
         }
         catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        return true;
     }
 
 
