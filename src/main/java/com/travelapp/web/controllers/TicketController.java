@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,20 +26,42 @@ public class TicketController {
     }
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Ticket> getAllTickets(HttpServletRequest req) {
-        return ticketService.getAll();
+    public List<TicketDto> getAllTickets(HttpServletRequest req) {
+        //Get ticket
+        List<Ticket> tickets = ticketService.getAll();
+        //Format ticket for output
+        List<TicketDto> ticketsdto = new ArrayList<TicketDto>();
+        for(Ticket t : tickets) {
+            ticketsdto.add(new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
+                    t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId()));
+        }
+        //Output ticket
+        return ticketsdto;
     }
 
-    @GetMapping("/{id}")
-    public Ticket getTicketById(@PathVariable int id) {
-        return ticketService.getById(id);
+    @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public TicketDto getTicketById(@PathVariable int id) {
+        //Get ticket
+        Ticket t = ticketService.getById(id);
+        //Format ticket for output
+        TicketDto ticketdto = new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
+                t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId());
+        //Output ticket
+        return ticketdto;
     }
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-    public Ticket registerNewTicket(@RequestBody TicketDto newTicket) {
+    public TicketDto registerNewTicket(@RequestBody TicketDto newTicket) {
+        //Format ticket for input
         newTicket.setArrivalTime(new Date());
         newTicket.setDepartureTime(new Date());
-        return ticketService.save(newTicket);
+        //Submit & Get ticket
+        Ticket t = ticketService.save(newTicket);
+        //Format ticket for output
+        TicketDto ticketdto = new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
+                t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId());
+        //Output ticket
+        return ticketdto;
     }
 
     @PutMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
