@@ -46,10 +46,6 @@ public class UserService{
     @Transactional
     public User saveNewUser(User newUser) {
 
-        if (!newUser.getRole().equals("Admin") && !newUser.getRole().equals("User")) {
-            throw new BadRequestException("Invalid Role Provided");
-        }
-
         return userRepo.save(newUser);
     }
 }
