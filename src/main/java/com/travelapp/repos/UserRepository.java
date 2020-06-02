@@ -74,9 +74,7 @@ public class UserRepository implements CrudRepository<User> {
 
         Session session = sessionFactory.getCurrentSession();
 
-        System.out.println(updatedUser);
         User user = session.get(User.class, updatedUser.getId());
-        System.out.println(user);
         user.setUsername(updatedUser.getUsername());
         user.setPassword(updatedUser.getPassword());
         user.setFirstName(updatedUser.getFirstName());
@@ -89,7 +87,6 @@ public class UserRepository implements CrudRepository<User> {
             Role role = session.find(Role.class, 2);
             user.setRole(role);
         }
-        System.out.println(user);
         session.update(user);
 
 //        Query query = session.createQuery("update User u where u.id = :id " +
