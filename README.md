@@ -1,14 +1,14 @@
 # Team-C-P2-API
-
-AUTHENTICATE <br />
-[POST] /auth : Authenticates user <br />
-
-USERS <br />
-[GET] /users : Gets all users  <br />
-[GET] /users/{id} : Gets user {id} <br />
-[GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id} !!NOT IMPLEMENTED!! <br />
-[POST] /users : Posts a user given a JSON with user properties <br />
 ```
+AUTHENTICATE 
+[POST] /auth : Authenticates user 
+
+USERS 
+[GET] /users : Gets all users 
+[GET] /users/{id} : Gets user {id} 
+[GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id} !!NOT IMPLEMENTED!! 
+[POST] /users : Posts a user given a JSON with user properties
+e.g:
 {
     "username": "{String}",
     "password": "{String}",
@@ -16,10 +16,10 @@ USERS <br />
     "lastName": "{String}",
     "email": "{String}"
 }
-```
-[DELETE] /users/{id} : Deletes a user with serial {id} <br />
-[PUT] /users : Updates a user given a JSON with user properties <br />
-```
+
+[DELETE] /users/{id} : Deletes a user with serial {id} 
+[PUT] /users : Updates a user given a JSON with user properties 
+e.g:
 {
     "id": {int},
     "username": "{String}",
@@ -28,13 +28,13 @@ USERS <br />
     "lastName": "{String}",
     "email": "{String}"
 }
-```
-<br />
-TICKETS <br />
-[GET] /tickets : Gets all tickets <br />
-[GET] /tickets/{id} : Gets ticket {id} <br />
-[POST] /tickets/{id} : Posts a ticket at {id} given a JSON with order properties <br />
-```
+
+
+TICKETS 
+[GET] /tickets : Gets all tickets 
+[GET] /tickets/{id} : Gets ticket {id} 
+[POST] /tickets/{id} : Posts a ticket at {id} given a JSON with order properties
+e.g:
 {
     "cost": {float},
     "origin": "string",
@@ -43,10 +43,10 @@ TICKETS <br />
     "arrivaltime": "MO-DY-YEAR",
     "author_id": {int}
 }
-```
-[PUT] /tickets/ : Updates a ticket given a JSON with order properties <br />
-```
-{<br />
+
+[PUT] /tickets/ : Updates a ticket given a JSON with order properties 
+e.g:
+{
     "id": {int},
     "cost": {float},
     "origin": "string",
@@ -55,6 +55,7 @@ TICKETS <br />
     "arrivaltime": "MO-DY-YEAR",
     "author_id": {int}
 }
-```
-[DELETE] /tickets/{id} : Deletes a ticket at {id} <br />
- 
+
+
+[DELETE] /tickets/{id} : Deletes a ticket at {id} 
+ ```
