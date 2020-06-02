@@ -119,9 +119,7 @@ public class UserRepository implements CrudRepository<User> {
         adminUsers.removeIf(u-> u.getId() == id);
         users.removeIf(u-> u.getId() == id);
 
-        System.out.println("user " + id + " " + deletedUser);
         session.remove(deletedUser);
-        System.out.println("Delete successful");
         //session.flush();
         return true;
     }
