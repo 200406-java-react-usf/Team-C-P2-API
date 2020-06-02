@@ -1,11 +1,13 @@
 package com.travelapp.repos;
 
 
+import com.travelapp.models.Role;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.web.dtos.TicketDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +45,12 @@ public class TicketRepository implements CrudRepository<Ticket> {
         return retrievedTicket;
     }
 
+    @Override
+    public Ticket save(Ticket newObj) {
+        return null;
+    }
 
+    //This needs to be fixed to follow the crudRepository implementation
     public Ticket save(Ticket ticket, int id) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -82,19 +89,17 @@ public class TicketRepository implements CrudRepository<Ticket> {
 
     @Override
     public boolean deleteById(int id) {
-        try (Session session = sessionFactory.getCurrentSession()) {
 
+        Session session = sessionFactory.getCurrentSession();
+        Ticket deletedTicket = session.find(Ticket.class, id);
 
-            Ticket s = session.load(Ticket.class, id);
-            session.delete(s);
+        //Get associations
+        User author = deletedTicket.getAuthor();
+        //Remove object from associations
+        author.getTickets().removeIf(t-> t.getId() == id);
 
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-
+        session.remove(deletedTicket);
+        //session.flush();
+        return true;
     }
 }

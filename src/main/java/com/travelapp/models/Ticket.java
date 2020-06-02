@@ -37,7 +37,7 @@ public class Ticket {
     @JsonSerialize(using = DateSerializer.class)
     private Date arrivalTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(nullable = false)
     private User author;
 //
@@ -159,6 +159,8 @@ public class Ticket {
 //    }
 
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -187,7 +189,7 @@ public class Ticket {
                 ", destination='" + destination + '\'' +
                 ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
-                ", author=" + author +
+//                ", author=" + author +
                 '}';
     }
 }

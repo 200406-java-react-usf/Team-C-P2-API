@@ -1,6 +1,7 @@
 package com.travelapp.repos;
 
 import com.travelapp.models.Role;
+import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.web.dtos.Credentials;
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class UserRepository {
+public class UserRepository implements CrudRepository<User> {
 
 
     private SessionFactory sessionFactory;
@@ -36,6 +37,7 @@ public class UserRepository {
         return validUser;
     }
 
+    @Override
     public User save(User newUser){
 
         Session session = sessionFactory.getCurrentSession();
@@ -50,12 +52,31 @@ public class UserRepository {
 
     }
 
+    @Override
     public List<User> getAll() {
 
             Session session = sessionFactory.getCurrentSession();
-            return session.createNativeQuery("select * from users",User.class).getResultList();
+            return session.createNativeQuery("select * from users", User.class).getResultList();
 
     }
+
+    @Override
+    public User findById(int id) {
+
+        Session session = sessionFactory.getCurrentSession();
+        User validUser = session.createQuery("from User u " +
+                "where u.id = :id", User.class)
+                .setParameter("id", id)
+                .getSingleResult();
+
+        return validUser;
+    }
+
+    @Override
+    public boolean update(User updatedObj) {
+        return false;
+    }
+
 
 //    public boolean updateUser(User updatedUser){
 //        Transaction transaction = null;
@@ -85,17 +106,21 @@ public class UserRepository {
 //    }
 
     public boolean deleteById(int id){
-        try(Session session = sessionFactory.getCurrentSession()) {
 
-            User deletedUser;
-            session.createQuery("delete users where id = :id")
-                    .setParameter("id", id)
-                    .executeUpdate();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        User deletedUser = session.find(User.class, id);
+
+        //Get associations
+        Role admin = session.find(Role.class, 1);
+        Role user = session.find(Role.class, 2);
+        List<User> adminUsers = admin.getUsers();
+        List<User> users = user.getUsers();
+        //Remove object from associations
+        adminUsers.removeIf(u-> u.getId() == id);
+        users.removeIf(u-> u.getId() == id);
+
+        session.remove(deletedUser);
+        //session.flush();
         return true;
     }
 
