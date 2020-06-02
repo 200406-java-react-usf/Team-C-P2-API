@@ -1,6 +1,7 @@
 package com.travelapp.repos;
 
 
+import com.travelapp.models.Role;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.web.dtos.TicketDto;
@@ -88,18 +89,17 @@ public class TicketRepository implements CrudRepository<Ticket> {
 
     @Override
     public boolean deleteById(int id) {
-        try (Session session = sessionFactory.getCurrentSession()) {
 
+        Session session = sessionFactory.getCurrentSession();
+        Ticket deletedTicket = session.find(Ticket.class, id);
 
-            Ticket retrievedTicket = session.get(Ticket.class, id);
-            System.out.println(retrievedTicket);
-            session.delete(retrievedTicket);
+        //Get associations
+        User author = deletedTicket.getAuthor();
+        //Remove object from associations
+        author.getTickets().removeIf(t-> t.getId() == id);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
+        session.remove(deletedTicket);
+        //session.flush();
         return true;
     }
 }
