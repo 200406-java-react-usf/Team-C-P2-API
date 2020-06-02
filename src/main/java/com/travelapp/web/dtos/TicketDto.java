@@ -8,27 +8,19 @@ import java.util.Objects;
 public class TicketDto {
 
     private int id;
-
     private double cost;
-
-
     private String origin;
-
-
     private String destination;
-
     @JsonSerialize(using = DateSerializer.class)
     private Date departureTime;
-
-
     @JsonSerialize(using = DateSerializer.class)
     private Date arrivalTime;
-
     private int author_id;
 
     public TicketDto() {
 
     }
+
     public TicketDto(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
         this.cost = cost;
         this.origin = origin;

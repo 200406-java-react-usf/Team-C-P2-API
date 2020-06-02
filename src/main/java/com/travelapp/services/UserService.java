@@ -1,5 +1,6 @@
 package com.travelapp.services;
 
+import com.travelapp.exceptions.BadRequestException;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
 
     private UserRepository userRepo;
 
@@ -24,6 +25,8 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepo.getAll();
     }
+
+    public User getById(int id) { return userRepo.findById(id); }
 
 //    @Transactional
 //    public boolean updateUser(User updatedUser) {
@@ -42,6 +45,7 @@ public class UserService {
 
     @Transactional
     public User saveNewUser(User newUser) {
+
         return userRepo.save(newUser);
     }
 }
