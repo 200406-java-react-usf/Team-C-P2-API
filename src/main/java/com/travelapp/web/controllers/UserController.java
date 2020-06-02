@@ -72,10 +72,10 @@ public class UserController {
         return userDto;
     }
 
-//    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public boolean updateUser(@RequestBody User updatedUser){
-//        return userService.updateUser(updatedUser);
-//    }
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean updateUser(@RequestBody User updatedUser){
+        return userService.updateUser(updatedUser);
+    }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteUser(@PathVariable int id){

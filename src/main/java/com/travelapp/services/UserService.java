@@ -26,26 +26,31 @@ public class UserService{
         return userRepo.getAll();
     }
 
+    @Transactional(readOnly=true)
     public User getById(int id) { return userRepo.findById(id); }
 
-//    @Transactional
-//    public boolean updateUser(User updatedUser) {
-//        return userRepo.updateUser(updatedUser);
-//    }
+    @Transactional
+    public boolean updateUser(User updatedUser) {
+
+        if (!updatedUser.getRole().equals("Admin") && !updatedUser.getRole().equals("User")) {
+            throw new BadRequestException("Invalid Role Provided");
+        }
+
+        return userRepo.update(updatedUser);
+    }
 
     @Transactional
     public boolean deleteUserById(int id) {
         return userRepo.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly=true)
     public User findUserByCredentials(Credentials creds) {
         return userRepo.findUserByCredentials(creds);
     }
 
     @Transactional
     public User saveNewUser(User newUser) {
-
         return userRepo.save(newUser);
     }
 }
