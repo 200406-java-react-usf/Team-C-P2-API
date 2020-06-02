@@ -106,8 +106,8 @@ public class UserRepository implements CrudRepository<User> {
 //    }
 
     public boolean deleteById(int id){
+
         Session session = sessionFactory.getCurrentSession();
-        System.out.println("deleting user " + id);
         User deletedUser = session.find(User.class, id);
 
         //Get associations
