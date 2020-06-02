@@ -41,11 +41,7 @@ public class UserRepository implements CrudRepository<User> {
     public User save(User newUser){
 
         Session session = sessionFactory.getCurrentSession();
-        if (newUser.getRole().equals("Admin")) {
-            newUser.setRole(session.get(Role.class, 1));
-        } else if (newUser.getRole().equals("User")) {
-            newUser.setRole(session.get(Role.class, 2));
-        }
+        newUser.setRole(session.get(Role.class, 2));
         session.save(newUser);
         return newUser;
 
