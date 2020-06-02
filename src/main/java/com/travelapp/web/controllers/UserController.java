@@ -64,13 +64,10 @@ public class UserController {
         //Get User
         User u =  userService.saveNewUser(newUser);
         //Format user for output
-        List<Ticket> ut = u.getTickets();
-        List<Integer> utickets = new ArrayList<Integer>();
-        for (Ticket ticket : ut) {
-            utickets.add(ticket.getId());
-        }
+        List<Integer> tickets = new ArrayList<>();
         UserDto userDto = new UserDto(u.getId(), u.getUsername(), u.getPassword(), u.getFirstName(),
-                u.getLastName(), u.getEmail(), u.getRole(), utickets);
+                u.getLastName(), u.getEmail(), u.getRole(), tickets);
+
         //Output user
         return userDto;
     }
