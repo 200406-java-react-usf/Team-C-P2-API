@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
 
     private UserRepository userRepo;
 
@@ -25,6 +25,8 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepo.getAll();
     }
+
+    public User getById(int id) { return userRepo.findById(id); }
 
 //    @Transactional
 //    public boolean updateUser(User updatedUser) {

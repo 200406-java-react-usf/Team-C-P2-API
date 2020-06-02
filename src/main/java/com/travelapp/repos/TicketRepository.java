@@ -6,6 +6,7 @@ import com.travelapp.models.User;
 import com.travelapp.web.dtos.TicketDto;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +44,12 @@ public class TicketRepository implements CrudRepository<Ticket> {
         return retrievedTicket;
     }
 
+    @Override
+    public Ticket save(Ticket newObj) {
+        return null;
+    }
 
+    //This needs to be fixed to follow the crudRepository implementation
     public Ticket save(Ticket ticket, int id) {
 
         Session session = sessionFactory.getCurrentSession();
@@ -85,16 +91,15 @@ public class TicketRepository implements CrudRepository<Ticket> {
         try (Session session = sessionFactory.getCurrentSession()) {
 
 
-            Ticket s = session.load(Ticket.class, id);
-            session.delete(s);
-
-            return true;
+            Ticket retrievedTicket = session.get(Ticket.class, id);
+            System.out.println(retrievedTicket);
+            session.delete(retrievedTicket);
 
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
-
+        return true;
     }
 }

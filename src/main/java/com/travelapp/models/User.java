@@ -34,11 +34,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(cascade= ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Role role;
 
-    @OneToMany(cascade = ALL,mappedBy = "author", fetch = FetchType.EAGER)
+    @OneToMany(cascade = ALL, mappedBy = "author", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Ticket> tickets;
 
     //Constructors
@@ -175,6 +175,10 @@ public class User {
         tickets.add(ticket);
     }
 
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
 
     @Override
     public String toString() {
