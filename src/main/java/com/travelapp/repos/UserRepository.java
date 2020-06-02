@@ -89,18 +89,6 @@ public class UserRepository implements CrudRepository<User> {
         }
         session.update(user);
 
-//        Query query = session.createQuery("update User u where u.id = :id " +
-//                " set u.username = : un, u.password = :pw " +
-//                ", u.first_name = :fn , u.last_name = :ln , u.email = :email , u.role = :role");
-//
-//        query.setParameter("id", updatedUser.getId())
-//                .setParameter("un", updatedUser.getUsername())
-//                .setParameter("pw", updatedUser.getPassword())
-//                .setParameter("fn", updatedUser.getFirstName())
-//                .setParameter("ln", updatedUser.getLastName())
-//                .setParameter("email", updatedUser.getEmail())
-//                .setParameter("role", updatedUser.getRole());
-
         return true;
     }
 
