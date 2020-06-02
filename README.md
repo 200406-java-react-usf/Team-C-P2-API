@@ -7,7 +7,7 @@ USERS <br />
 [GET] /users : Gets all users  <br />
 [GET] /users/{id} : Gets user {id} <br />
 [GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id} !!NOT IMPLEMENTED!! <br />
-[POST] /users : Posts a user given a JSON with user properties <br /> <br />
+[POST] /users : Posts a user given a JSON with user properties <br />
 [DELETE] /users/{id} : Deletes a user with serial {id} <br />
 [PUT] /users : Updates a user given a JSON with user properties <br />
  <br />
