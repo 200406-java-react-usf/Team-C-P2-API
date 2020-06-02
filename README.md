@@ -9,25 +9,25 @@ USERS
 [GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id} !!NOT IMPLEMENTED!! 
 [POST] /users : Posts a user given a JSON with user properties
 e.g:
-{
-    "username": "{String}",
-    "password": "{String}",
-    "firstName": "{String}",
-    "lastName": "{String}",
-    "email": "{String}"
-}
+    {
+        "username": "{String}",
+        "password": "{String}",
+        "firstName": "{String}",
+        "lastName": "{String}",
+        "email": "{String}"
+    }
 
 [DELETE] /users/{id} : Deletes a user with serial {id} 
 [PUT] /users : Updates a user given a JSON with user properties 
 e.g:
-{
-    "id": {int},
-    "username": "{String}",
-    "password": "{String}",
-    "firstName": "{String}",
-    "lastName": "{String}",
-    "email": "{String}"
-}
+    {
+        "id": {int},
+        "username": "{String}",
+        "password": "{String}",
+        "firstName": "{String}",
+        "lastName": "{String}",
+        "email": "{String}"
+    }
 
 
 TICKETS 
@@ -35,26 +35,26 @@ TICKETS
 [GET] /tickets/{id} : Gets ticket {id} 
 [POST] /tickets/{id} : Posts a ticket at {id} given a JSON with order properties
 e.g:
-{
-    "cost": {float},
-    "origin": "string",
-    "destination": "string",
-    "departuretime": "MO-DY-YEAR",
-    "arrivaltime": "MO-DY-YEAR",
-    "author_id": {int}
-}
+    {
+        "cost": {float},
+        "origin": "string",
+        "destination": "string",
+        "departuretime": "MO-DY-YEAR",
+        "arrivaltime": "MO-DY-YEAR",
+        "author_id": {int}
+    }
 
 [PUT] /tickets/ : Updates a ticket given a JSON with order properties 
 e.g:
-{
-    "id": {int},
-    "cost": {float},
-    "origin": "string",
-    "destination": "string",
-    "departuretime": "MO-DY-YEAR",
-    "arrivaltime": "MO-DY-YEAR",
-    "author_id": {int}
-}
+    {
+        "id": {int},
+        "cost": {float},
+        "origin": "string",
+        "destination": "string",
+        "departuretime": "MO-DY-YEAR",
+        "arrivaltime": "MO-DY-YEAR",
+        "author_id": {int}
+    }
 
 
 [DELETE] /tickets/{id} : Deletes a ticket at {id} 
