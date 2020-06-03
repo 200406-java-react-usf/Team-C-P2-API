@@ -2,8 +2,10 @@ package com.travelapp.web.dtos;
 
 import com.travelapp.models.Role;
 import com.travelapp.models.Ticket;
+import com.travelapp.models.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +21,24 @@ public class UserDto {
     private String email;
     private String role;
     private List<Integer> tickets;
+
+    public UserDto(User u) {
+        List<Ticket> ut = u.getTickets();
+        List<Integer> utickets = new ArrayList<Integer>();
+        if (ut != null) {
+            for (Ticket ticket : ut) {
+                utickets.add(ticket.getId());
+            }
+        }
+        this.id = u.getId();
+        this.username = u.getUsername();
+        this.password = u.getPassword();
+        this.firstName = u.getFirstName();
+        this.lastName = u.getLastName();
+        this.email = u.getEmail();
+        this.role = u.getRole();
+        this.tickets = utickets;
+    }
 
     public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role, List<Integer> tickets) {
         this.id = id;
