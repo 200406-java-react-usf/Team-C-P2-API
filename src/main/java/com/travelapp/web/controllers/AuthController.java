@@ -3,6 +3,7 @@ package com.travelapp.web.controllers;
 import com.travelapp.models.User;
 import com.travelapp.services.UserService;
 import com.travelapp.web.dtos.Credentials;
+import com.travelapp.web.dtos.Principal;
 import com.travelapp.web.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,9 +23,9 @@ public class AuthController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto authUser(@RequestBody Credentials creds) {
+    public Principal authUser(@RequestBody Credentials creds) {
 
-        return userService.findUserByCredentials(creds);
+        return new Principal(userService.findUserByCredentials(creds));
     }
 
 }

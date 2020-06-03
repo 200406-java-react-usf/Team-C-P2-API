@@ -50,16 +50,10 @@ public class TicketRepository implements CrudRepository<Ticket> {
 
         Session session = sessionFactory.getCurrentSession();
 
-        try {
-            User user = session.load(User.class, ticket.getAuthor().getId());
-            ticket.setAuthor(user);
-            user.addTickets(ticket);
-//            session.save(ticket);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("Nothing");
-        }
+        User user = session.load(User.class, ticket.getAuthor().getId());
+        ticket.setAuthor(user);
+        user.addTickets(ticket);
+        session.save(ticket);
 
         return ticket;
     }
