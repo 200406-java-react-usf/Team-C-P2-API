@@ -15,7 +15,6 @@ public class UserDto {
 
     private int id;
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     private String email;
@@ -32,7 +31,6 @@ public class UserDto {
         }
         this.id = u.getId();
         this.username = u.getUsername();
-        this.password = u.getPassword();
         this.firstName = u.getFirstName();
         this.lastName = u.getLastName();
         this.email = u.getEmail();
@@ -43,7 +41,6 @@ public class UserDto {
     public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role, List<Integer> tickets) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -54,7 +51,6 @@ public class UserDto {
     public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -76,15 +72,6 @@ public class UserDto {
 
     public UserDto setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public UserDto setPassword(String password) {
-        this.password = password;
         return this;
     }
 
@@ -140,7 +127,6 @@ public class UserDto {
         UserDto userDto = (UserDto) o;
         return id == userDto.id &&
                 Objects.equals(username, userDto.username) &&
-                Objects.equals(password, userDto.password) &&
                 Objects.equals(firstName, userDto.firstName) &&
                 Objects.equals(lastName, userDto.lastName) &&
                 Objects.equals(email, userDto.email) &&
@@ -150,7 +136,7 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, email, role, tickets);
+        return Objects.hash(id, username, firstName, lastName, email, role, tickets);
     }
 
     @Override
@@ -158,7 +144,6 @@ public class UserDto {
         return "UserDto{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
