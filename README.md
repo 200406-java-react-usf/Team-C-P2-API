@@ -33,7 +33,7 @@ e.g:
 TICKETS 
 [GET] /tickets : Gets all tickets 
 [GET] /tickets/{id} : Gets ticket {id} 
-[POST] /tickets/{id} : Posts a ticket at {id} given a JSON with order properties
+[POST] /tickets/ : Posts a ticket at {id} given a JSON with order properties
 e.g:
     {
         "cost": {float},
