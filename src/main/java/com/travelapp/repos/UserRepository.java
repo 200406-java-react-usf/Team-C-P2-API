@@ -37,6 +37,13 @@ public class UserRepository implements CrudRepository<User> {
         return validUser;
     }
 
+    public List<Ticket> getUserTickets(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
+        List<Ticket> tickets = user.getTickets();
+        return tickets;
+    }
+
     @Override
     public User save(User newUser){
 
@@ -68,38 +75,29 @@ public class UserRepository implements CrudRepository<User> {
         return validUser;
     }
 
+
     @Override
-    public boolean update(User updatedObj) {
-        return false;
+    public boolean update(User updatedUser){
+
+        Session session = sessionFactory.getCurrentSession();
+
+        User user = session.get(User.class, updatedUser.getId());
+        user.setUsername(updatedUser.getUsername());
+        user.setPassword(updatedUser.getPassword());
+        user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
+        user.setEmail(updatedUser.getEmail());
+        if (updatedUser.getRole().equals("Admin")) {
+            Role role = session.find(Role.class, 1);
+            user.setRole(role);
+        } else if (updatedUser.getRole().equals("User")) {
+            Role role = session.find(Role.class, 2);
+            user.setRole(role);
+        }
+        session.update(user);
+
+        return true;
     }
-
-
-//    public boolean updateUser(User updatedUser){
-//        Transaction transaction = null;
-//
-//        try(Session session = sessionFactory.getCurrentSession()) {
-//
-//            transaction = session.beginTransaction();
-//            Query query = session.createQuery("update User u set u.password = :pw " +
-//                    ", u.first_name = :fn , u.last_name = :ln , u.email = :email , u.role = :role");
-//
-//            query.setParameter("pw", updatedUser.getPassword())
-//                    .setParameter("fn", updatedUser.getFirstName())
-//                    .setParameter("ln", updatedUser.getLastName())
-//                    .setParameter("email", updatedUser.getEmail())
-//                    .setParameter("role", updatedUser.getRole());
-//
-//            transaction.commit();
-//            return true;
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//            if (transaction != null) {
-//                transaction.rollback();
-//            }
-//            return false;
-//        }
-//    }
 
     public boolean deleteById(int id){
 

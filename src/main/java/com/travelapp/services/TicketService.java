@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,25 +19,28 @@ public class TicketService {
     public TicketService(TicketRepository repo) { this.ticketRepo = repo; }
 
     @Transactional(readOnly=true)
-    public List<Ticket> getAll(){
-        return ticketRepo.getAll();
+    public List<TicketDto> getAll(){
+
+        List<Ticket> tickets = ticketRepo.getAll();
+        List<TicketDto> ticketDtos = new ArrayList<>();
+        for (Ticket t : tickets) { ticketDtos.add(new TicketDto(t)); }
+
+        return ticketDtos;
     }
 
     @Transactional(readOnly=true)
-    public Ticket getById(int id) {
-        return ticketRepo.findById(id);
+    public TicketDto getById(int id) {
+        return new TicketDto(ticketRepo.findById(id));
     }
 
     @Transactional
-    public Ticket save(TicketDto tempTicket) {
-        Ticket ticket = new Ticket();
-        ticket.setCost(tempTicket.getCost());
-        ticket.setOrigin(tempTicket.getOrigin());
-        ticket.setDestination(tempTicket.getDestination());
-        ticket.setDepartureTime(tempTicket.getDepartureTime());
-        ticket.setArrivalTime(tempTicket.getArrivalTime());
-        int user_id = tempTicket.getAuthor_id();
-        return ticketRepo.save(ticket, user_id);
+    public TicketDto save(TicketDto ticketDto) {
+
+        System.out.println(ticketDto.getArrivalTime());
+        System.out.println(ticketDto.getDepartureTime());
+        Ticket ticket = new Ticket(ticketDto);
+        return new TicketDto(ticketRepo.save(ticket));
+
     }
 
     @Transactional
