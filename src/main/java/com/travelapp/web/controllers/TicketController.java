@@ -4,6 +4,7 @@ import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.services.TicketService;
 import com.travelapp.web.dtos.TicketDto;
+import com.travelapp.web.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +27,21 @@ public class TicketController {
     }
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin"})
     public List<TicketDto> getAllTickets(HttpServletRequest req) {
 
         return ticketService.getAll();
     }
 
     @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin", "User"})
     public TicketDto getTicketById(@PathVariable int id) {
 
         return ticketService.getById(id);
     }
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin", "User"})
     public TicketDto registerNewTicket(@RequestBody TicketDto newTicket) {
         newTicket.setArrivalTime(new Date());
         newTicket.setDepartureTime(new Date());
@@ -45,9 +49,11 @@ public class TicketController {
     }
 
     @PutMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin", "User"})
     public boolean updateTicket(@RequestBody Ticket updatedTicket) { return ticketService.update(updatedTicket); }
 
     @DeleteMapping("/{id}")
+    @Secured(allowedRoles = {"Admin", "User"})
     public boolean deleteTicket(@PathVariable int id) { return ticketService.deleteById(id); }
 
 }
