@@ -1,6 +1,7 @@
 package com.travelapp.services;
 
 import com.travelapp.exceptions.BadRequestException;
+import com.travelapp.exceptions.ResourceNotFoundException;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.travelapp.util.Validator.*;
 
 @Service
 public class UserService{
@@ -23,11 +26,24 @@ public class UserService{
 
     @Transactional(readOnly=true)
     public List<User> getAllUsers() {
-        return userRepo.getAll();
+        List<User> users = userRepo.getAll();
+        if(isEmptyList(users)){
+            throw new ResourceNotFoundException();
+        }
+        return users;
     }
 
     @Transactional
-    public User getById(int id) { return userRepo.findById(id); }
+    public User getById(int id) {
+        if(!isValidId(id)){
+            throw new BadRequestException();
+        }
+        User user = userRepo.findById(id);
+        if(isEmptyObj(user)){
+            throw new ResourceNotFoundException();
+        }
+        return user;
+    }
 
 //    @Transactional
 //    public boolean updateUser(User updatedUser) {
@@ -49,6 +65,12 @@ public class UserService{
 
     @Transactional
     public User saveNewUser(User newUser) {
+        if(isValidUser(newUser)){
+            throw new BadRequestException();
+        }
+        if(isValidEmail(newUser.getEmail())){
+            throw new BadRequestException("Not a valid email");
+        }
 
         return userRepo.save(newUser);
     }
