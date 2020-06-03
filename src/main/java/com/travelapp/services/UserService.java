@@ -5,6 +5,7 @@ import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
+import com.travelapp.web.dtos.Principal;
 import com.travelapp.web.dtos.TicketDto;
 import com.travelapp.web.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,8 @@ public class UserService{
 
 
     @Transactional(readOnly=true)
-    public UserDto findUserByCredentials(Credentials creds) {
-        return new UserDto(userRepo.findUserByCredentials(creds));
+    public Principal findUserByCredentials(Credentials creds) {
+        return new Principal(userRepo.findUserByCredentials(creds));
     }
 
     @Transactional(readOnly=true)
