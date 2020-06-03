@@ -27,41 +27,21 @@ public class TicketController {
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public List<TicketDto> getAllTickets(HttpServletRequest req) {
-        //Get ticket
-        List<Ticket> tickets = ticketService.getAll();
-        //Format ticket for output
-        List<TicketDto> ticketsdto = new ArrayList<TicketDto>();
-        for(Ticket t : tickets) {
-            ticketsdto.add(new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
-                    t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId()));
-        }
-        //Output ticket
-        return ticketsdto;
+
+        return ticketService.getAll();
     }
 
     @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
     public TicketDto getTicketById(@PathVariable int id) {
-        //Get ticket
-        Ticket t = ticketService.getById(id);
-        //Format ticket for output
-        TicketDto ticketdto = new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
-                t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId());
-        //Output ticket
-        return ticketdto;
+
+        return ticketService.getById(id);
     }
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
     public TicketDto registerNewTicket(@RequestBody TicketDto newTicket) {
-        //Format ticket for input
         newTicket.setArrivalTime(new Date());
         newTicket.setDepartureTime(new Date());
-        //Submit & Get ticket
-        Ticket t = ticketService.save(newTicket);
-        //Format ticket for output
-        TicketDto ticketdto = new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
-                t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId());
-        //Output ticket
-        return ticketdto;
+        return ticketService.save(newTicket);
     }
 
     @PutMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
