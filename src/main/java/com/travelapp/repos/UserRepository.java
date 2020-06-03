@@ -37,6 +37,13 @@ public class UserRepository implements CrudRepository<User> {
         return validUser;
     }
 
+    public List<Ticket> getUserTickets(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.get(User.class, id);
+        List<Ticket> tickets = user.getTickets();
+        return tickets;
+    }
+
     @Override
     public User save(User newUser){
 
