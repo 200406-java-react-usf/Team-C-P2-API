@@ -21,6 +21,12 @@ public class Principal {
         this.role = u.getRole();
     }
 
+    public Principal(User u) {
+        this.id = u.getId();
+        this.username = u.getUsername();
+        this.role = u.getRole();
+    }
+
     public Principal(int id, String username, String role) {
         this.id = id;
         this.username = username;
