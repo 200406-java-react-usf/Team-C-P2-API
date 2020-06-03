@@ -1,6 +1,7 @@
 package com.travelapp.services;
 
 import com.travelapp.exceptions.BadRequestException;
+import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
@@ -26,6 +27,7 @@ public class UserService{
         return userRepo.getAll();
     }
 
+
     @Transactional(readOnly=true)
     public User getById(int id) { return userRepo.findById(id); }
 
@@ -41,6 +43,9 @@ public class UserService{
 
     @Transactional
     public boolean deleteUserById(int id) {
+        if(id <= 0){
+            throw new BadRequestException();
+        }
         return userRepo.deleteById(id);
     }
 
@@ -48,6 +53,9 @@ public class UserService{
     public User findUserByCredentials(Credentials creds) {
         return userRepo.findUserByCredentials(creds);
     }
+
+    @Transactional(readOnly=true)
+    public List<Ticket> getUserTickets(int id) { return userRepo.getUserTickets(id); }
 
     @Transactional
     public User saveNewUser(User newUser) {
