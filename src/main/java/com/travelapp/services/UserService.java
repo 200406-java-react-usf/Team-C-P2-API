@@ -26,6 +26,7 @@ public class UserService{
         return userRepo.getAll();
     }
 
+    @Transactional
     public User getById(int id) { return userRepo.findById(id); }
 
 //    @Transactional
@@ -35,6 +36,9 @@ public class UserService{
 
     @Transactional
     public boolean deleteUserById(int id) {
+        if(id <= 0){
+            throw new BadRequestException();
+        }
         return userRepo.deleteById(id);
     }
 
