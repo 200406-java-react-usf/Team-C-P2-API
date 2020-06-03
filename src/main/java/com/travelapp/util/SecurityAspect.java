@@ -37,15 +37,13 @@ public class SecurityAspect {
         List<String> allowedRoles = Arrays.asList(ctrlrAnnotation.allowedRoles());
         Principal principal = (Principal) request.getAttribute("principal");
 
-        System.out.println("I am in SecurityAspect " + principal);
-        System.out.println(principal.getRole());
 
         if (principal == null) {
             throw new AuthorizationException("An unauthenticated request was made to a protected endpoint.");
         }
 
         if (!allowedRoles.contains(principal.getRole())) {
-            throw new AuthorizationException("A forbidden request was made by " + principal.getUsername() + principal+principal.getRole());
+            throw new AuthorizationException("A forbidden request was made by " + principal.getUsername());
         }
 
         return pjp.proceed();
