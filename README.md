@@ -6,7 +6,7 @@ AUTHENTICATE
 USERS 
 [GET] /users : Gets all users 
 [GET] /users/{id} : Gets user {id} 
-[GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id} !!NOT IMPLEMENTED!! 
+[GET] /users/{id}/tickets : Gets all the users tickets with the specified author {id}
 [POST] /users : Posts a user given a JSON with user properties
 e.g:
     {
