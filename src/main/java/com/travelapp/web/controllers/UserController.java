@@ -3,6 +3,7 @@ package com.travelapp.web.controllers;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.services.UserService;
+import com.travelapp.web.dtos.TicketDto;
 import com.travelapp.web.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -59,6 +60,17 @@ public class UserController {
         return userDto;
     }
 
+    @GetMapping(value = "/{id}/tickets", produces=MediaType.APPLICATION_JSON_VALUE)
+    public List<TicketDto> getUserTickets(@PathVariable int id) {
+        List<Ticket> tickets = userService.getUserTickets(id);
+        List<TicketDto> ticketsdto = new ArrayList<TicketDto>();
+        for(Ticket t : tickets) {
+            ticketsdto.add(new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
+                    t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId()));
+        }
+        return ticketsdto;
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserDto saveUser(@RequestBody User newUser){
         //Get User
@@ -72,10 +84,10 @@ public class UserController {
         return userDto;
     }
 
-//    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public boolean updateUser(@RequestBody User updatedUser){
-//        return userService.updateUser(updatedUser);
-//    }
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean updateUser(@RequestBody User updatedUser){
+        return userService.updateUser(updatedUser);
+    }
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteUser(@PathVariable int id){
