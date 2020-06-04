@@ -3,6 +3,7 @@ package com.travelapp.repos;
 import com.travelapp.models.Role;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
+import com.travelapp.util.Validator;
 import com.travelapp.web.dtos.Credentials;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
+
+import static com.travelapp.util.Validator.isEmptyString;
 
 @Repository
 public class UserRepository implements CrudRepository<User> {
@@ -83,7 +86,9 @@ public class UserRepository implements CrudRepository<User> {
 
         User user = session.get(User.class, updatedUser.getId());
         user.setUsername(updatedUser.getUsername());
-        user.setPassword(updatedUser.getPassword());
+        if(!isEmptyString(updatedUser.getPassword())){
+            user.setPassword(updatedUser.getPassword());
+        }
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setEmail(updatedUser.getEmail());
