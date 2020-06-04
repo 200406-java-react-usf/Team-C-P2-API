@@ -1,5 +1,6 @@
 package com.travelapp.services;
 
+import com.travelapp.exceptions.ResourceNotFoundException;
 import com.travelapp.models.Ticket;
 import com.travelapp.repos.TicketRepository;
 import com.travelapp.web.dtos.TicketDto;
@@ -20,10 +21,18 @@ public class TicketService {
 
     @Transactional(readOnly=true)
     public List<TicketDto> getAll(){
+        List<Ticket> tickets;
+        try{
+            tickets = ticketRepo.getAll();
+        }
+        catch (Exception e) {
+            throw new ResourceNotFoundException();
+        }
 
-        List<Ticket> tickets = ticketRepo.getAll();
         List<TicketDto> ticketDtos = new ArrayList<>();
-        for (Ticket t : tickets) { ticketDtos.add(new TicketDto(t)); }
+        for (Ticket t : tickets) {
+            ticketDtos.add(new TicketDto(t));
+        }
 
         return ticketDtos;
     }
