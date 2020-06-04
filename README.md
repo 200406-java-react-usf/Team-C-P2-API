@@ -58,4 +58,3 @@ e.g:
 
 
 [DELETE] /tickets/{id} : Deletes a ticket at {id} 
-```
