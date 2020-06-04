@@ -4,11 +4,13 @@ import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.services.TicketService;
 import com.travelapp.web.dtos.TicketDto;
+import com.travelapp.web.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,26 +27,33 @@ public class TicketController {
     }
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Ticket> getAllTickets(HttpServletRequest req) {
+    @Secured(allowedRoles = {"Admin"})
+    public List<TicketDto> getAllTickets(HttpServletRequest req) {
+
         return ticketService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Ticket getTicketById(@PathVariable int id) {
+    @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin", "User"})
+    public TicketDto getTicketById(@PathVariable int id) {
+
         return ticketService.getById(id);
     }
 
     @PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-    public Ticket registerNewTicket(@RequestBody TicketDto newTicket) {
+    @Secured(allowedRoles = {"Admin", "User"})
+    public TicketDto registerNewTicket(@RequestBody TicketDto newTicket) {
         newTicket.setArrivalTime(new Date());
         newTicket.setDepartureTime(new Date());
         return ticketService.save(newTicket);
     }
 
     @PutMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    @Secured(allowedRoles = {"Admin", "User"})
     public boolean updateTicket(@RequestBody Ticket updatedTicket) { return ticketService.update(updatedTicket); }
 
     @DeleteMapping("/{id}")
+    @Secured(allowedRoles = {"Admin", "User"})
     public boolean deleteTicket(@PathVariable int id) { return ticketService.deleteById(id); }
 
 }

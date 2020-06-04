@@ -19,7 +19,7 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String roleName;
 
-    @OneToMany(cascade = ALL, mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(cascade = ALL, mappedBy = "role", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<User> users;
 
     // Constructors
@@ -57,6 +57,14 @@ public class Role {
         return this;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public Role setUsers(List<User> users) {
+        this.users = users;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

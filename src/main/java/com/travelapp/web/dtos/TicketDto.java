@@ -2,33 +2,37 @@ package com.travelapp.web.dtos;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import com.travelapp.models.Ticket;
+
 import java.util.Date;
 import java.util.Objects;
 
 public class TicketDto {
 
     private int id;
-
     private double cost;
-
-
     private String origin;
-
-
     private String destination;
-
     @JsonSerialize(using = DateSerializer.class)
     private Date departureTime;
-
-
     @JsonSerialize(using = DateSerializer.class)
     private Date arrivalTime;
-
     private int author_id;
 
     public TicketDto() {
 
     }
+
+    public TicketDto(Ticket t) {
+        this.id = t.getId();
+        this.cost = t.getCost();
+        this.origin = t.getOrigin();
+        this.destination = t.getDestination();
+        this.departureTime = t.getDepartureTime();
+        this.arrivalTime = t.getArrivalTime();
+        this.author_id = t.getAuthor().getId();
+    }
+
     public TicketDto(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
         this.cost = cost;
         this.origin = origin;
