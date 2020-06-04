@@ -14,16 +14,12 @@ public class Validator {
         return (obj == null);
     }
 
-    public static boolean isEmptyList(List list) {
-        return (list == null);
-    }
-
     public static boolean isEmptyString(String string) {
-        return (string.trim() == "");
+        return (string.trim().equals(""));
     }
 
     public static boolean isValidUser(User user) {
-        if (!isValidId(user.getId()) || isEmptyString(user.getFirstName()) || isEmptyString(user.getLastName()) || isEmptyString(user.getEmail())){
+        if (isEmptyString(user.getFirstName()) || isEmptyString(user.getLastName()) || isEmptyString(user.getEmail()) || isEmptyString(user.getUsername()) || isEmptyString(user.getPassword())){
             return false;
         }
         else {
