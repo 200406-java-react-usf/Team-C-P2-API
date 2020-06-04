@@ -120,6 +120,9 @@ public class UserService{
         if (!updatedUser.getRole().equals("Admin") && !updatedUser.getRole().equals("User")) {
             throw new BadRequestException("Invalid Role Provided");
         }
+        if(!isValidUpdatedUser(updatedUser)){
+            throw new BadRequestException();
+        }
         try{
             return userRepo.update(updatedUser);
         }
