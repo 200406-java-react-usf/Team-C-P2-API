@@ -94,10 +94,10 @@ public class AppConfig implements WebMvcConfigurer, WebApplicationInitializer {
 
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**").allowedMethods("GET","POST","PUT","DELETE");
-        registry.addMapping("/**").allowCredentials(true);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry){
+//        registry.addMapping("/**").allowedMethods("GET","POST","PUT","DELETE");
+//        registry.addMapping("/**").allowCredentials(true);
+//    }
 
 }

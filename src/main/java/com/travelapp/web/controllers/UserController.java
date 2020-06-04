@@ -27,61 +27,26 @@ public class UserController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDto> getAllUsers(HttpServletRequest req) {
-        //Get users
-        List<User> users = userService.getAllUsers();
-        //Format users for output
-        List<UserDto> userDtos = new ArrayList<UserDto>();
-        for (User u : users) {
-            List<Ticket> ut = u.getTickets();
-            List<Integer> utickets = new ArrayList<Integer>();
-            for (Ticket ticket : ut) {
-                utickets.add(ticket.getId());
-            }
-            userDtos.add(new UserDto(u.getId(), u.getUsername(), u.getPassword(), u.getFirstName(),
-                    u.getLastName(), u.getEmail(), u.getRole(), utickets));
-        }
-        //Output users
-        return userDtos;
+
+        return userService.getAllUsers();
     }
 
     @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
     public UserDto getUserById(@PathVariable int id) {
-        //Get User
-        User u = userService.getById(id);
-        //Format user for output
-        List<Ticket> ut = u.getTickets();
-        List<Integer> utickets = new ArrayList<Integer>();
-        for (Ticket ticket : ut) {
-            utickets.add(ticket.getId());
-        }
-        UserDto userDto = new UserDto(u.getId(), u.getUsername(), u.getPassword(), u.getFirstName(),
-                u.getLastName(), u.getEmail(), u.getRole(), utickets);
-        //Output user
-        return userDto;
+
+        return userService.getById(id);
     }
 
     @GetMapping(value = "/{id}/tickets", produces=MediaType.APPLICATION_JSON_VALUE)
     public List<TicketDto> getUserTickets(@PathVariable int id) {
-        List<Ticket> tickets = userService.getUserTickets(id);
-        List<TicketDto> ticketsdto = new ArrayList<TicketDto>();
-        for(Ticket t : tickets) {
-            ticketsdto.add(new TicketDto(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
-                    t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId()));
-        }
-        return ticketsdto;
+
+        return userService.getUserTickets(id);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserDto saveUser(@RequestBody User newUser){
-        //Get User
-        User u =  userService.saveNewUser(newUser);
-        //Format user for output
-        List<Integer> tickets = new ArrayList<>();
-        UserDto userDto = new UserDto(u.getId(), u.getUsername(), u.getPassword(), u.getFirstName(),
-                u.getLastName(), u.getEmail(), u.getRole(), tickets);
 
-        //Output user
-        return userDto;
+        return userService.saveNewUser(newUser);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

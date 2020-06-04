@@ -45,30 +45,15 @@ public class TicketRepository implements CrudRepository<Ticket> {
         return retrievedTicket;
     }
 
-    @Override
-    public Ticket save(Ticket newObj) {
-        return null;
-    }
-
     //This needs to be fixed to follow the crudRepository implementation
-    public Ticket save(Ticket ticket, int id) {
+    public Ticket save(Ticket ticket) {
 
         Session session = sessionFactory.getCurrentSession();
 
-        System.out.println(id);
-        try{
-            User user = session.load(User.class, id);
-            System.out.println(user);
-            ticket.setAuthor(user);
-            user.addTickets(ticket);
-//
-//            session.save(ticket);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("Nothing");
-        }
-
+        User user = session.load(User.class, ticket.getAuthor().getId());
+        ticket.setAuthor(user);
+        user.addTickets(ticket);
+        session.save(ticket);
 
         return ticket;
     }

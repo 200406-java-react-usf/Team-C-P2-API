@@ -2,6 +2,7 @@ package com.travelapp.models;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import com.travelapp.web.dtos.TicketDto;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -47,6 +48,15 @@ public class Ticket {
     // Constructors
     public Ticket() {
 
+    }
+
+    public Ticket(TicketDto t) {
+        this.cost = t.getCost();
+        this.origin = t.getOrigin();
+        this.destination = t.getDestination();
+        this.departureTime = t.getDepartureTime();
+        this.arrivalTime = t.getArrivalTime();
+        this.author = new User(t.getAuthor_id());
     }
 
     public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
