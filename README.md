@@ -1,5 +1,5 @@
 # Team-C-P2-API
-
+```
 AUTHENTICATE 
 [POST] /auth : Authenticates user 
 
@@ -58,3 +58,4 @@ e.g:
 
 
 [DELETE] /tickets/{id} : Deletes a ticket at {id} 
+```
