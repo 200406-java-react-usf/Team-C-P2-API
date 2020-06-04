@@ -1,6 +1,9 @@
 package com.travelapp.services;
 
 import com.travelapp.exceptions.BadRequestException;
+import com.travelapp.exceptions.ResourceNotFoundException;
+import com.travelapp.exceptions.ResourcePersistenceException;
+import com.travelapp.exceptions.TravelappException;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
@@ -13,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.travelapp.util.Validator.*;
 
 @Service
 public class UserService{
@@ -27,38 +32,84 @@ public class UserService{
 
     @Transactional(readOnly=true)
     public List<UserDto> getAllUsers() {
-
-        List<User> users = userRepo.getAll();
+        List<User> users;
+        try {
+            users = userRepo.getAll();
+        }
+        catch (Exception e) {
+            throw new ResourceNotFoundException();
+        }
         List<UserDto> userDtos = new ArrayList<>();
-
-        for (User u : users) { userDtos.add(new UserDto(u)); }
+        for (User u : users) {
+            userDtos.add(new UserDto(u));
+        }
 
         return userDtos;
     }
-
-
-    @Transactional(readOnly=true)
-    public UserDto getById(int id) { return new UserDto(userRepo.findById(id)); }
-
-
-    @Transactional(readOnly=true)
-    public UserDto findUserByCredentials(Credentials creds) {
-        return new UserDto(userRepo.findUserByCredentials(creds));
+    @Transactional(readOnly = true)
+    public UserDto getById(int id) {
+        if(!isValidId(id)){
+            throw new BadRequestException();
+        }
+        User user = userRepo.findById(id);
+        if(isEmptyObj(user)){
+            throw new ResourceNotFoundException();
+        }
+        return new UserDto(user);
     }
 
     @Transactional(readOnly=true)
     public List<TicketDto> getUserTickets(int id) {
 
-        List<Ticket> tickets = userRepo.getUserTickets(id);
+        if(!isValidId(id)){
+            throw new BadRequestException();
+        }
+
+        List<Ticket> tickets;
+        try {
+            tickets = userRepo.getUserTickets(id);
+        }
+        catch (Exception e) {
+            throw new ResourceNotFoundException();
+        }
+
         List<TicketDto> ticketDtos = new ArrayList<>();
-        for (Ticket t : tickets) { ticketDtos.add(new TicketDto(t)); }
+        for (Ticket t : tickets) {
+            ticketDtos.add(new TicketDto(t));
+        }
 
         return ticketDtos;
+    }
+    @Transactional(readOnly=true)
+    public UserDto findUserByCredentials(Credentials creds) {
+        if(isEmptyString(creds.getUsername()) || isEmptyString(creds.getPassword())){
+            throw new BadRequestException();
+        }
+        try{
+            return new UserDto(userRepo.findUserByCredentials(creds));
+        }
+        catch (Exception e){
+            throw new ResourceNotFoundException();
+        }
+
     }
 
     @Transactional
     public UserDto saveNewUser(User newUser) {
-        return new UserDto(userRepo.save(newUser));
+        if (!isValidUser(newUser)) {
+            throw new BadRequestException();
+        }
+        if (!isValidEmail(newUser.getEmail())) {
+            throw new BadRequestException("Not a valid email");
+        }
+        try {
+            User user = userRepo.save(newUser);
+            return new UserDto(user);
+        }
+        catch (Exception e) {
+            throw new ResourcePersistenceException("Could not persist user");
+        }
+
     }
 
     @Transactional
@@ -67,15 +118,26 @@ public class UserService{
         if (!updatedUser.getRole().equals("Admin") && !updatedUser.getRole().equals("User")) {
             throw new BadRequestException("Invalid Role Provided");
         }
+        try{
+            return userRepo.update(updatedUser);
+        }
+        catch (Exception e) {
+            throw new ResourcePersistenceException();
+        }
 
-        return userRepo.update(updatedUser);
     }
 
     @Transactional
     public boolean deleteUserById(int id) {
-        if(id <= 0){
+        if(!isValidId(id)){
             throw new BadRequestException();
         }
-        return userRepo.deleteById(id);
+        try{
+            return userRepo.deleteById(id);
+        }
+        catch (Exception e){
+            return true;
+        }
+
     }
 }
