@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Secured(allowedRoles = {"Admin"})
-    public List<UserDto> getAllUsers(HttpServletRequest req) {
+    public List<UserDto> getAllUsers() {
 
         return userService.getAllUsers();
     }
