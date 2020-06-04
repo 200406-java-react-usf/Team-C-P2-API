@@ -50,7 +50,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
             int id = Integer.parseInt(claims.getId());
             String username = claims.getSubject();
-            String role = claims.getSubject();
+            String role = claims.get("role", String.class);
             Principal principal = new Principal(id, username, role);
             req.setAttribute("principal", principal);
 

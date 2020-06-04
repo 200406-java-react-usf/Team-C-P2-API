@@ -8,6 +8,7 @@ import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
 import com.travelapp.repos.UserRepository;
 import com.travelapp.web.dtos.Credentials;
+import com.travelapp.web.dtos.Principal;
 import com.travelapp.web.dtos.TicketDto;
 import com.travelapp.web.dtos.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class UserService{
 
         return userDtos;
     }
+
     @Transactional(readOnly = true)
     public UserDto getById(int id) {
         if(!isValidId(id)){
@@ -81,12 +83,12 @@ public class UserService{
         return ticketDtos;
     }
     @Transactional(readOnly=true)
-    public UserDto findUserByCredentials(Credentials creds) {
+    public Principal findUserByCredentials(Credentials creds) {
         if(isEmptyString(creds.getUsername()) || isEmptyString(creds.getPassword())){
             throw new BadRequestException();
         }
         try{
-            return new UserDto(userRepo.findUserByCredentials(creds));
+            return new Principal(userRepo.findUserByCredentials(creds));
         }
         catch (Exception e){
             throw new ResourceNotFoundException();

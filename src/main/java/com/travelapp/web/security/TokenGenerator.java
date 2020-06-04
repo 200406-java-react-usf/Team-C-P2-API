@@ -18,6 +18,7 @@ public class TokenGenerator {
 
         long now = System.currentTimeMillis();
 
+
         JwtBuilder builder = Jwts.builder()
                 .setId(Integer.toString(subject.getId()))
                 .setSubject(subject.getUsername())
