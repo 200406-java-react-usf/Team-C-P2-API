@@ -58,7 +58,7 @@ public class TicketService {
 
     @Transactional
     public TicketDto save(TicketDto ticketDto) {
-        if(isValidTicket(ticketDto)){
+        if(!isValidTicket(ticketDto)){
             throw new BadRequestException();
         }
         Ticket ticket = new Ticket(ticketDto);
