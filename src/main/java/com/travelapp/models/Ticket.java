@@ -50,15 +50,6 @@ public class Ticket {
 
     }
 
-    public Ticket(TicketDto t) {
-        this.cost = t.getCost();
-        this.origin = t.getOrigin();
-        this.destination = t.getDestination();
-        this.departureTime = t.getDepartureTime();
-        this.arrivalTime = t.getArrivalTime();
-        this.author = new User(t.getAuthor_id());
-    }
-
     public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
         this.cost = cost;
         this.origin = origin;
@@ -72,7 +63,7 @@ public class Ticket {
         this.id = id;
     }
 
-        public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
+    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, User author) {
         this(cost, origin, destination, departureTime, arrivalTime);
         this.author = author;
     }
@@ -82,6 +73,10 @@ public class Ticket {
         this.author = author;
     }
 
+    public Ticket(TicketDto t) {
+        this(t.getCost(), t.getOrigin(), t.getDestination(), t.getDepartureTime(), t.getArrivalTime());
+        this.author = new User(t.getAuthor_id());
+    }
     //
 //    public Ticket(double cost, String origin, String destination, Date departureTime, Date arrivalTime, List<Recommendation> recommendations) {
 //        this(cost, origin, destination, departureTime, arrivalTime);

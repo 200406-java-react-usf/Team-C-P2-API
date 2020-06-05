@@ -43,13 +43,9 @@ public class User {
 
     //Constructors
 
-    public User() {
+    public User() {}
 
-    }
-
-    public User(int id) {
-        this.id = id;
-    }
+    public User(int id) { this.id = id; }
 
     public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
@@ -60,32 +56,17 @@ public class User {
     }
 
     public User(String username, String password, String firstName, String lastName, String email, Role role) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this(username, password, firstName, lastName, email);
         this.role = role;
     }
 
     public User(int id, String username, String password, String firstName, String lastName, String email, Role role) {
+        this(username, password, firstName, lastName, email, role);
         this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
     }
 
     public User(int id, String username, String password, String firstName, String lastName, String email, Role role, List<Ticket> tickets) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
+        this(id, username, password, firstName, lastName, email, role);
         this.tickets = tickets;
     }
 
