@@ -1,5 +1,8 @@
 package com.travelapp.services;
 
+import com.travelapp.exceptions.BadRequestException;
+import com.travelapp.exceptions.ResourceNotFoundException;
+import com.travelapp.exceptions.ResourcePersistenceException;
 import com.travelapp.models.Role;
 import com.travelapp.models.Ticket;
 import com.travelapp.models.User;
@@ -51,6 +54,7 @@ public class UserServiceTest {
         mockUsers.add(e);
     }
 
+
     @Test
     public void getAllUsersTest1() {
 
@@ -60,6 +64,14 @@ public class UserServiceTest {
 
         assertEquals(users.size(), 5);
 
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void getAllUsersThrowsErrorTest(){
+        List<Ticket> test = new ArrayList<>();
+        when(mockRepo.getAll()).thenThrow();
+
+        sut.getAllUsers();
     }
 
     @Test
@@ -73,6 +85,22 @@ public class UserServiceTest {
 
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void getByIdThrowsResourceNotFoundExceptionTest1(){
+        List<Ticket> test = new ArrayList<>();
+        when(mockRepo.findById(1)).thenReturn(null);
+
+        sut.getById(1);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void getByIdThrowsBadRequestExceptionTest2(){
+        List<Ticket> test = new ArrayList<>();
+        when(mockRepo.findById(1)).thenReturn(mockUsers.get(1));
+
+        sut.getById(-1);
+    }
+
     @Test
     public void getUserTicketsTest1() {
 
@@ -83,7 +111,7 @@ public class UserServiceTest {
         mockTickets.add(t1);
         mockTickets.add(t2);
         mockTickets.add(t3);
-        mockUsers.get(1).setTickets(mockTickets);
+        User tempUser = new User(mockUsers.get(1)).setTickets(mockTickets);
         when(mockRepo.getUserTickets(1)).thenReturn(mockTickets);
 
         List<TicketDto> tickets = sut.getUserTickets(1);
@@ -92,6 +120,41 @@ public class UserServiceTest {
 
 
     }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void getUserTicketsThrowsResourceNotFoundExceptionTest() {
+
+        Ticket t1 = new Ticket(1, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        Ticket t2 = new Ticket(2, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        Ticket t3 = new Ticket(3, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        List<Ticket> mockTickets = new ArrayList<>();
+        mockTickets.add(t1);
+        mockTickets.add(t2);
+        mockTickets.add(t3);
+        User tempUser = new User(mockUsers.get(1)).setTickets(mockTickets);
+        when(mockRepo.getUserTickets(1)).thenThrow();
+
+        List<TicketDto> tickets = sut.getUserTickets(1);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void getUserTicketsThrowsBadRequestExceptionTest() {
+
+        Ticket t1 = new Ticket(1, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        Ticket t2 = new Ticket(2, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        Ticket t3 = new Ticket(3, 5.99, "arr", "dst", new Date(), new Date(), mockUsers.get(1));
+        List<Ticket> mockTickets = new ArrayList<>();
+        mockTickets.add(t1);
+        mockTickets.add(t2);
+        mockTickets.add(t3);
+        User tempUser = new User(mockUsers.get(1)).setTickets(mockTickets);
+        when(mockRepo.getUserTickets(1)).thenReturn(mockTickets);
+
+        List<TicketDto> tickets = sut.getUserTickets(-1);
+
+    }
+
     @Test
     public void findUserByCredentialsTest1() {
         when(mockRepo.findUserByCredentials(new Credentials("aanderson", "password"))).
@@ -101,6 +164,33 @@ public class UserServiceTest {
 
 
         assert(user.equals(new Principal(mockUsers.get(1))));
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void findUserByCredentialsThrowsResourceNotFoundExceptionest() {
+        when(mockRepo.findUserByCredentials(new Credentials("aanderson", "password"))).
+                thenThrow();
+
+        Principal user = sut.findUserByCredentials(new Credentials("aanderson", "password"));
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void findUserByCredentialsThrowsBadRequestExceptionTest1() {
+        when(mockRepo.findUserByCredentials(new Credentials("aanderson", "password")))
+                .thenReturn(mockUsers.get(1));
+
+        Principal user = sut.findUserByCredentials(new Credentials("", "password"));
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void findUserByCredentialsThrowsBadRequestExceptionTest2() {
+        when(mockRepo.findUserByCredentials(new Credentials("aanderson", "password"))).
+                thenReturn(mockUsers.get(1));
+
+        Principal user = sut.findUserByCredentials(new Credentials("aanderson", ""));
 
     }
 
@@ -115,6 +205,44 @@ public class UserServiceTest {
 
     }
 
+    @Test(expected = ResourcePersistenceException.class)
+    public void saveNewUserThrowsResourcePersistenceExceptionTest() {
+
+        when(mockRepo.save(mockUsers.get(1))).thenThrow();
+
+        UserDto user = sut.saveNewUser(mockUsers.get(1));
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void saveNewUserThrowsBadRequestExceptionTest1() {
+
+        when(mockRepo.save(mockUsers.get(1))).thenReturn(mockUsers.get(1));
+
+        UserDto user = sut.saveNewUser(null);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void saveNewUserThrowsBadRequestExceptionTest2() {
+
+        User tempUser = new User(mockUsers.get(1)).setEmail("@");
+        when(mockRepo.save(mockUsers.get(1))).thenReturn(tempUser);
+
+        UserDto user = sut.saveNewUser(tempUser);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void saveNewUserThrowsBadRequestExceptionTest3() {
+
+        User tempUser = new User(mockUsers.get(1)).setFirstName("");
+        when(mockRepo.save(mockUsers.get(1))).thenReturn(tempUser);
+
+        UserDto user = sut.saveNewUser(tempUser);
+
+    }
+
     @Test
     public void updateUserTest1() {
 
@@ -123,6 +251,44 @@ public class UserServiceTest {
         boolean user = sut.updateUser(mockUsers.get(1));
 
         assertEquals(user, true);
+
+    }
+
+    @Test(expected = ResourcePersistenceException.class)
+    public void updateUserThrowsResourcePersistenceExceptionTest() {
+
+        when(mockRepo.update(mockUsers.get(1))).thenThrow();
+
+        boolean user = sut.updateUser(mockUsers.get(1));
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void updateUserThrowsBadRequestExceptionTest1() {
+
+        when(mockRepo.update(mockUsers.get(1))).thenReturn(true);
+
+        boolean user = sut.updateUser(null);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void updateUserThrowsBadRequestExceptionTest2() {
+
+        User tempUser = new User(mockUsers.get(1)).setRole(new Role("Invalid"));
+        when(mockRepo.update(tempUser)).thenReturn(true);
+
+        boolean user = sut.updateUser(tempUser);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void updateUserThrowsBadRequestExceptionTest3() {
+
+        User tempUser = new User(mockUsers.get(1)).setUsername("");
+        when(mockRepo.update(tempUser)).thenReturn(true);
+
+        boolean user = sut.updateUser(tempUser);
 
     }
 
@@ -135,5 +301,26 @@ public class UserServiceTest {
 
         assertEquals(user, true);
 
+    }
+
+    @Test
+    public void deleteUserByIdThrowsExceptionTest() {
+
+        when(mockRepo.deleteById(1)).thenThrow();
+
+        boolean user = sut.deleteUserById(1);
+
+        assert(user);
+
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void deleteUserByIdThrowsBadRequestExceptionTest() {
+
+        when(mockRepo.deleteById(1)).thenReturn(true);
+
+        boolean user = sut.deleteUserById(-1);
+
+        assert(false);
     }
 }
