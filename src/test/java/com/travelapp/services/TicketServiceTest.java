@@ -115,7 +115,7 @@ public class TicketServiceTest {
     public void saveTest() {
         TicketDto test;
         try {
-            test = new TicketDto(100,"WPB","Tampa",
+            test = new TicketDto(0,100.00,"WPB","Tampa",
                     new SimpleDateFormat("dd/MM/yyyy").parse("02/02/2020"),
                     new SimpleDateFormat("dd/MM/yyyy").parse("03/03/2020"), 2);
 

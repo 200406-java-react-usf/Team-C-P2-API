@@ -43,15 +43,14 @@ public class Validator {
     }
 
     public static boolean isValidNumber(double number) {
-        if(number <= 0){
-            return false;
-        }
-        return true;
+        return (number > 0);
+
     }
 
     public static boolean isValidUpdateTicket(Ticket ticket) {
         if(!isValidId(ticket.getId()) || !isValidNumber(ticket.getCost()) || isEmptyString(ticket.getOrigin()) ||
-                isEmptyString(ticket.getDestination()) || isEmptyObj(ticket.getDepartureTime()) || isEmptyObj(ticket.getArrivalTime()) || !isValidUser(ticket.getAuthor()))
+                isEmptyString(ticket.getDestination()) || isEmptyObj(ticket.getDepartureTime()) ||
+                isEmptyObj(ticket.getArrivalTime()) || !isValidUser(ticket.getAuthor()))
         {
             return false;
         }
@@ -61,7 +60,7 @@ public class Validator {
     }
 
     public static boolean isValidTicket(TicketDto ticket) {
-        if(!isValidId(ticket.getId()) || !isValidNumber(ticket.getCost()) || isEmptyString(ticket.getOrigin()) ||
+        if(!isValidNumber(ticket.getCost()) || isEmptyString(ticket.getOrigin()) ||
                 isEmptyString(ticket.getDestination()) || isEmptyObj(ticket.getDepartureTime()) || isEmptyObj(ticket.getArrivalTime()) || !isValidId(ticket.getAuthor_id()))
         {
             return false;
