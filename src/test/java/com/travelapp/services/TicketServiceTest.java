@@ -11,29 +11,29 @@ import java.util.List;
 
 public class TicketServiceTest {
 
-    @Test
-    public List<TicketDto> getAll(){
-        return null;
-    }
-
-    @Test
-    public TicketDto getById(int id) {
-        return null;
-    }
-
-    @Test
-    public TicketDto save(TicketDto ticketDto) {
-        return null;
-
-    }
-
-    @Test
-    public boolean update(Ticket ticket) {
-        return false;
-    }
-
-    @Test
-    public boolean deleteById(int id) {
-        return false;
-    }
+//    @Test
+//    public List<TicketDto> getAll(){
+//        return null;
+//    }
+//
+//    @Test
+//    public TicketDto getById(int id) {
+//        return null;
+//    }
+//
+//    @Test
+//    public TicketDto save(TicketDto ticketDto) {
+//        return null;
+//
+//    }
+//
+//    @Test
+//    public boolean update(Ticket ticket) {
+//        return false;
+//    }
+//
+//    @Test
+//    public boolean deleteById(int id) {
+//        return false;
+//    }
 }
