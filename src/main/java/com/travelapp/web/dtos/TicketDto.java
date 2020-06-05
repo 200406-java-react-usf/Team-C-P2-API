@@ -19,19 +19,7 @@ public class TicketDto {
     private Date arrivalTime;
     private int author_id;
 
-    public TicketDto() {
-
-    }
-
-    public TicketDto(Ticket t) {
-        this.id = t.getId();
-        this.cost = t.getCost();
-        this.origin = t.getOrigin();
-        this.destination = t.getDestination();
-        this.departureTime = t.getDepartureTime();
-        this.arrivalTime = t.getArrivalTime();
-        this.author_id = t.getAuthor().getId();
-    }
+    public TicketDto() {}
 
     public TicketDto(double cost, String origin, String destination, Date departureTime, Date arrivalTime) {
         this.cost = cost;
@@ -42,22 +30,18 @@ public class TicketDto {
     }
 
     public TicketDto(double cost, String origin, String destination, Date departureTime, Date arrivalTime, int author_id) {
-        this.cost = cost;
-        this.origin = origin;
-        this.destination = destination;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+        this(cost, origin, destination, departureTime, arrivalTime);
         this.author_id = author_id;
     }
 
     public TicketDto(int id, double cost, String origin, String destination, Date departureTime, Date arrivalTime, int author_id) {
+        this(cost, origin, destination, departureTime, arrivalTime, author_id);
         this.id = id;
-        this.cost = cost;
-        this.origin = origin;
-        this.destination = destination;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-        this.author_id = author_id;
+    }
+
+    public TicketDto(Ticket t) {
+        this(t.getId(), t.getCost(), t.getOrigin(), t.getDestination(),
+                t.getDepartureTime(), t.getArrivalTime(), t.getAuthor().getId());
     }
 
     public int getId() {

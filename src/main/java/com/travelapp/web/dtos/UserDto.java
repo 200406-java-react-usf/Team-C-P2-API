@@ -21,33 +21,6 @@ public class UserDto {
     private String role;
     private List<Integer> tickets;
 
-    public UserDto(User u) {
-        List<Ticket> ut = u.getTickets();
-        List<Integer> utickets = new ArrayList<Integer>();
-        if (ut != null) {
-            for (Ticket ticket : ut) {
-                utickets.add(ticket.getId());
-            }
-        }
-        this.id = u.getId();
-        this.username = u.getUsername();
-        this.firstName = u.getFirstName();
-        this.lastName = u.getLastName();
-        this.email = u.getEmail();
-        this.role = u.getRole();
-        this.tickets = utickets;
-    }
-
-    public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role, List<Integer> tickets) {
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.tickets = tickets;
-    }
-
     public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role) {
         this.id = id;
         this.username = username;
@@ -55,6 +28,23 @@ public class UserDto {
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+    }
+
+    public UserDto(int id, String username, String password, String firstName, String lastName, String email, String role, List<Integer> tickets) {
+        this(id, username, password, firstName, lastName, email, role);
+        this.tickets = tickets;
+    }
+
+    public UserDto(User u) {
+        this(u.getId(), u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getEmail(), u.getRole());
+        List<Ticket> ut = u.getTickets();
+        List<Integer> utickets = new ArrayList<Integer>();
+        if (ut != null) {
+            for (Ticket ticket : ut) {
+                utickets.add(ticket.getId());
+            }
+        }
+        this.tickets = utickets;
     }
 
     public int getId() {

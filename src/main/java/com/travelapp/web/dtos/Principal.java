@@ -15,23 +15,15 @@ public class Principal {
         super();
     }
 
-    public Principal(UserDto u) {
-        this.id = u.getId();
-        this.username = u.getUsername();
-        this.role = u.getRole();
-    }
-
-    public Principal(User u) {
-        this.id = u.getId();
-        this.username = u.getUsername();
-        this.role = u.getRole();
-    }
-
     public Principal(int id, String username, String role) {
         this.id = id;
         this.username = username;
         this.role = role;
     }
+
+    public Principal(UserDto u) { this(u.getId(), u.getUsername(), u.getRole()); }
+
+    public Principal(User u) { this(u.getId(), u.getUsername(), u.getRole()); }
 
     public int getId() {
         return id;
