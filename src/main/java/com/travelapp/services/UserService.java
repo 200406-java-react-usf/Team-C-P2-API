@@ -98,6 +98,9 @@ public class UserService{
 
     @Transactional
     public UserDto saveNewUser(User newUser) {
+        if (isEmptyObj(newUser)) {
+            throw new BadRequestException();
+        }
         if (!isValidUser(newUser)) {
             throw new BadRequestException();
         }
@@ -116,7 +119,9 @@ public class UserService{
 
     @Transactional
     public boolean updateUser(User updatedUser) {
-
+        if (isEmptyObj(updatedUser)) {
+            throw new BadRequestException();
+        }
         if (!updatedUser.getRole().equals("Admin") && !updatedUser.getRole().equals("User")) {
             throw new BadRequestException("Invalid Role Provided");
         }
