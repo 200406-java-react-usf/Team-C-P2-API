@@ -51,7 +51,7 @@ public class Validator {
 
     public static boolean isValidUpdateTicket(Ticket ticket) {
         if(!isValidId(ticket.getId()) || !isValidNumber(ticket.getCost()) || isEmptyString(ticket.getOrigin()) ||
-                isEmptyString(ticket.getDestination()) || isEmptyObj(ticket.getDepartureTime()) || isEmptyObj(ticket.getArrivalTime()) || isValidUser(ticket.getAuthor()))
+                isEmptyString(ticket.getDestination()) || isEmptyObj(ticket.getDepartureTime()) || isEmptyObj(ticket.getArrivalTime()) || !isValidUser(ticket.getAuthor()))
         {
             return false;
         }

@@ -74,7 +74,7 @@ public class TicketService {
 
     @Transactional
     public boolean update(Ticket ticket) {
-        if(isValidUpdateTicket(ticket)){
+        if(!isValidUpdateTicket(ticket)){
             throw new BadRequestException();
         }
         try {
