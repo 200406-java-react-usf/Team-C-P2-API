@@ -89,6 +89,11 @@ public class User {
         this.tickets = tickets;
     }
 
+    //Copy a user, but doesn't copy their tickets
+    public User(User u) {
+        this(u.id, u.username, u.password, u.firstName, u.lastName, u.email, u.role);
+    }
+
     // Getters/Setters
 
     public int getId() {
