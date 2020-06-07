@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.travelapp.util.Validator.isEmptyString;
 
@@ -102,6 +103,20 @@ public class UserRepository implements CrudRepository<User> {
         session.update(user);
 
         return true;
+    }
+
+    public boolean checkUsername(String un) {
+        Session session = sessionFactory.getCurrentSession();
+        Optional<User> exists = Optional.ofNullable(session.createQuery("from User u where u.username = :un", User.class)
+                .setParameter("un", un).uniqueResult());
+        return exists.isPresent();
+    }
+
+    public boolean checkEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        Optional<User> exists = Optional.ofNullable(session.createQuery("from User u where u.email = :email", User.class)
+                .setParameter("email", email).uniqueResult());
+        return exists.isPresent();
     }
 
     public boolean deleteById(int id){

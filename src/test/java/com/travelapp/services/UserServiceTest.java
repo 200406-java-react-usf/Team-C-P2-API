@@ -208,7 +208,7 @@ public class UserServiceTest {
     @Test(expected = ResourcePersistenceException.class)
     public void saveNewUserThrowsResourcePersistenceExceptionTest() {
 
-        when(mockRepo.save(mockUsers.get(1))).thenThrow();
+        when(mockRepo.save(mockUsers.get(1))).thenThrow(new ResourcePersistenceException());
 
         UserDto user = sut.saveNewUser(mockUsers.get(1));
 
@@ -216,20 +216,20 @@ public class UserServiceTest {
 
     @Test(expected = BadRequestException.class)
     public void saveNewUserThrowsBadRequestExceptionTest1() {
+        when(mockRepo.checkUsername("")).thenReturn(false);
+        when(mockRepo.checkEmail("")).thenReturn(false);
+        User test = mockUsers.get(1).setUsername("");
+        //when(mockRepo.save(test)).thenReturn(mockUsers.get(1));
 
-        when(mockRepo.save(mockUsers.get(1))).thenReturn(mockUsers.get(1));
-
-        UserDto user = sut.saveNewUser(null);
+        UserDto user = sut.saveNewUser(test);
 
     }
 
     @Test(expected = BadRequestException.class)
     public void saveNewUserThrowsBadRequestExceptionTest2() {
-
-        User tempUser = new User(mockUsers.get(1)).setEmail("@");
-        when(mockRepo.save(mockUsers.get(1))).thenReturn(tempUser);
-
-        UserDto user = sut.saveNewUser(tempUser);
+        User test = new User(mockUsers.get(1)).setUsername("");
+        //when(mockRepo.save(test)).thenReturn(mockUsers.get(1));
+        UserDto user = sut.saveNewUser(test);
 
     }
 
@@ -237,7 +237,7 @@ public class UserServiceTest {
     public void saveNewUserThrowsBadRequestExceptionTest3() {
 
         User tempUser = new User(mockUsers.get(1)).setFirstName("");
-        when(mockRepo.save(mockUsers.get(1))).thenReturn(tempUser);
+        //when(mockRepo.save(mockUsers.get(1))).thenReturn(mockUsers.get(1));
 
         UserDto user = sut.saveNewUser(tempUser);
 
@@ -245,10 +245,11 @@ public class UserServiceTest {
 
     @Test
     public void updateUserTest1() {
+        when(mockRepo.checkUsername("")).thenReturn(false);
+        when(mockRepo.checkEmail("")).thenReturn(false);
+        when(mockRepo.update(mockUsers.get(2).setUsername("test1"))).thenReturn(true);
 
-        when(mockRepo.update(mockUsers.get(1))).thenReturn(true);
-
-        boolean user = sut.updateUser(mockUsers.get(1));
+        boolean user = sut.updateUser(mockUsers.get(2).setUsername("test1"));
 
         assertEquals(user, true);
 
@@ -256,19 +257,18 @@ public class UserServiceTest {
 
     @Test(expected = ResourcePersistenceException.class)
     public void updateUserThrowsResourcePersistenceExceptionTest() {
+        when(mockRepo.update(mockUsers.get(1))).thenThrow(new ResourcePersistenceException());
 
-        when(mockRepo.update(mockUsers.get(1))).thenThrow();
-
-        boolean user = sut.updateUser(mockUsers.get(1));
+        sut.updateUser(mockUsers.get(1));
 
     }
 
     @Test(expected = BadRequestException.class)
     public void updateUserThrowsBadRequestExceptionTest1() {
 
-        when(mockRepo.update(mockUsers.get(1))).thenReturn(true);
-
-        boolean user = sut.updateUser(null);
+        User test = new User(mockUsers.get(1)).setEmail("");
+        //when(mockRepo.update(mockUsers.get(1))).thenReturn(true);
+        sut.updateUser(test);
 
     }
 

@@ -19,7 +19,7 @@ public class TicketRepository implements CrudRepository<Ticket> {
     private SessionFactory sessionFactory;
 
     @Autowired
-    private TicketRepository(SessionFactory factory) {
+    public TicketRepository(SessionFactory factory) {
         super();
         this.sessionFactory = factory;
     }
