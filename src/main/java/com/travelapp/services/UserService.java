@@ -107,6 +107,12 @@ public class UserService{
         if (!isValidEmail(newUser.getEmail())) {
             throw new BadRequestException("Not a valid email");
         }
+        if(userRepo.checkUsername(newUser.getUsername())){
+            throw new ResourcePersistenceException("Username is taken");
+        }
+        if(userRepo.checkEmail(newUser.getEmail())){
+            throw new ResourcePersistenceException("Email is taken");
+        }
         try {
             User user = userRepo.save(newUser);
             return new UserDto(user);
@@ -127,6 +133,12 @@ public class UserService{
         }
         if(!isValidUpdatedUser(updatedUser)){
             throw new BadRequestException();
+        }
+        if(userRepo.checkUsername(updatedUser.getUsername())){
+            throw new ResourcePersistenceException("Username is taken");
+        }
+        if(userRepo.checkEmail(updatedUser.getEmail())){
+            throw new ResourcePersistenceException("Email is taken");
         }
         try{
             return userRepo.update(updatedUser);
